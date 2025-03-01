@@ -1,21 +1,26 @@
 
 const base = "http://localhost/Projects/Digital-Wallet/";
-function alert_message($message){
-    alert("message");
+function alert_message(message){
+    alert(message);
     return false;
 }
+
+function check_missing(data, args){
+    let is_checkable = true;
+    for(let i=0; i<args.length;i++){
+        if(data[i]==''){
+            return alert_message(args[i]+" is missing");
+        }
+    }
+    return is_checkable;
+}
+
 function register(){
     const name = document.querySelector('[name="full_name"]').value;
     const email = document.querySelector('[name="email"]').value;
     const pass = document.querySelector('[name="pass"]').value;
-    let is_checkable = true;
-    if (name === "") {
-        is_checkable = alert_message("name is missing");
-    }else if (email === "") {
-        is_checkable = alert_message("email is missing");
-    }else if (pass === "") {
-        is_checkable = alert_message("password is missing");
-    }else{
+    let is_checkable = check_missing([name,email,pass],['name','email','password']);
+    if(is_checkable){
         const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if(!email.match(email_regex)){
             is_checkable = alert_message("Invalid email address");
@@ -45,17 +50,13 @@ function register(){
 }
 
 // base+"/Wallet-Server/user/v1/login.php"
-    // "http://localhost/Projects/Digital-Wallet/Wallet-Server/user/v1/login.php"
+// "http://localhost/Projects/Digital-Wallet/Wallet-Server/user/v1/login.php"
         
 async function login(){
     const email = document.querySelector('[name="email"]').value;
     const pass = document.querySelector('[name="pass"]').value;
-    let is_checkable = true;
-    if (email === "") {
-        is_checkable = alert_message("email is missing");
-    }else if (pass === "") {
-        is_checkable = alert_message("password is missing");
-    }else{
+    let is_checkable = check_missing([email,pass],['email','password']);
+    if(is_checkable){
         const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if(!email.match(email_regex)){
             is_checkable = alert_message("Invalid email address");
