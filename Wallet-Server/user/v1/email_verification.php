@@ -1,23 +1,18 @@
 <?php
     include("../../connection/connection.php");
+    include("../../utils.php");
     if($con->connect_error){
-        die();
+        return;
     }
-
+    $response=[];
     if(isset($_GET['id'])){
         $query = $con->prepare("UPDATE users set validation_level=0 WHERE id=?");
-        if($query){
-            $query->bind_param("s", $_GET['id']);
-            if ($query->execute()) {
-                echo "Your email is verified";
-            } else {
-                echo "Error: not executed";
+        if(sql_utils::query_execution($query,"i", [$_GET['id']])){
+            $result = $query->get_result();
+            if($query->affected_rows==1){
+                $response = "Your Email IS Verified";
             }
-
-        } else{
-            echo "Error: not prepared";
+            echo json_encode($response);
         }
-    } else{
-        echo "messing parameter";
     }
 ?>
