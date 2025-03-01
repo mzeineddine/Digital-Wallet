@@ -1,14 +1,14 @@
 <?php
-    include("./connection.php");
+    include("../../connection/connection.php");
     if($con->connect_error){
         die();
     }
-
-    if(isset($_POST['email']) && isset($_POST['pass'])){
-
-        $email = $_POST['email'];
-        $pass = $_POST['pass'];
-        // $pass = hash("sha3-256", $pass);
+    $data = json_decode(file_get_contents('php://input'), true);
+    print_r($data);
+    if(isset($data['email']) && isset($data['pass'])){
+        $email = $data['email'];
+        $pass = $data['pass'];
+        $pass = hash("sha3-256", $pass);
 
         $query = $con->prepare("SELECT * FROM users WHERE email=? and pass =?;");
 
@@ -19,12 +19,18 @@
 
                 $result = $query->get_result();
 
-                if($result->num_rows>0){
-                    echo "User found";
-                }else{
-                    echo "Check input email and pass miss match";
-                }
+                // if($result->num_rows>0){
+                //     echo "User found";
+                // }else{
+                //     echo "Check input email and pass miss match";
+                // }
 
+                $response=[];
+                $counter=0;
+                while($user = mysqli_fetch_assoc($result)){
+                    $response += $user;
+                }
+                echo json_encode($response);
             } else {
                 echo "Error: not executed";
             }
