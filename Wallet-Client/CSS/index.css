@@ -14,8 +14,8 @@ body{
     color: var(--main-font-color);
     width: 100vw;
     height: 100vh;
-
     font-size: 20px;
+}
 
 .flex{
     display: flex;
@@ -103,19 +103,11 @@ img{
 .logo{
     width: 2.5em;
     height: 2.5em;
-<<<<<<< HEAD
     margin:0.5em;
 }
 
 .name{
     font-size: 1em;
-=======
-    margin:0.25em;
-}
-
-.name{
-    font-size: 2em;
->>>>>>> 7ebefab4b76f18316e049bc7b07da3ee67bcf538
     margin:0.25em;
     font-weight: bold;
     text-align: center;
@@ -149,7 +141,6 @@ img{
     background-color: #0A8994;
 }
 
-<<<<<<< HEAD
 nav{
     background-color: #0A8994;
     overflow: hidden;
@@ -316,10 +307,6 @@ nav ul li a:hover {
 
 /* 320px, 480px, 768px, 1024px*/
 /* @media (max-width: 1024) {
-=======
-/* 320px, 480px, 768px, 1024px*/
-@media (max-width: 1024) {
->>>>>>> 7ebefab4b76f18316e049bc7b07da3ee67bcf538
     body{
         font-size: 18px;
         transition: all 300ms ease;
@@ -354,8 +341,4 @@ nav ul li a:hover {
     .main{
         width: 90%;
     }
-<<<<<<< HEAD
 } */
-=======
-}
->>>>>>> 7ebefab4b76f18316e049bc7b07da3ee67bcf538
