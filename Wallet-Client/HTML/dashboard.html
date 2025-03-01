@@ -7,19 +7,23 @@
     <link rel="stylesheet" href="../CSS/index.css">
 </head>
 <body>
+    <script src="../JS/index.js"></script>
     <nav class="width100 flex row center contnet-start">
-        <div class="logo_name flex row width50 content-start">
+        <div class="flex row width100 center content-start">
             <div class="logo">
                 <img class="width100 height100" src="../../assets/logo.png" alt="">
             </div>
-            <p class="name">Digital Wallet</p>
+            <p class="name">Digital&nbsp;Wallet</p>
         </div>
-        <ul class="width50 height100 flex row center space-evenly">
-            <li class="height100"><a href="./dashboard.html">Dashboard</a></li>
-            <li class="height100"><a href="./transactions">Transactions</a></li>
-            <li class="height100"><a href="./help_center">Help Center</a></li>
-            <li class="height100"><a href="./settings">Settings</a></li>
-        </ul>
+        <ul>
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="./transactions">Transactions</a></li>
+            <li><a href="./help_center">Help&nbsp;Center</a></li>
+            <li><a href="./settings">Settings</a></li>
+        </ul> 
+        <a class="logo nav_icon" onclick="nav_icon_click()">
+            <img class="width100 height100" src="../../assets/bars.svg" alt="">
+        </a>
     </nav>
 </body>
 </html>

@@ -9,7 +9,7 @@
         if($query){
             $query->bind_param("s", $_GET['id']);
             if ($query->execute()) {
-                
+                echo "Your email is verified";
             } else {
                 echo "Error: not executed";
             }
