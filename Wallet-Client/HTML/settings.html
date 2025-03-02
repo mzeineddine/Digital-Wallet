@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../CSS/index.css">
+</head>
+<body>
+    <nav class="width100 flex row center stretch">
+        <div class="flex row width100 center content-start">
+            <div class="logo">
+                <img class="width100 height100" src="../../assets/logo.png" alt="">
+            </div>
+            <p class="name">Digital&nbsp;Wallet</p>
+        </div>
+        <ul>
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="./transactions.html">Transactions</a></li>
+            <li><a href="./help_center.html">Help&nbsp;Center</a></li>
+            <li><a href="./settings.html">Settings</a></li>
+        </ul> 
+        <a class="logo nav_icon" onclick="nav_icon_click()">
+            <img class="width100 height100" src="../../assets/bars.svg" alt="">
+        </a>
+    </nav>
+
+    <div class="main_content  height75 flex row wrap center space-between">
+        <h2 class="width100 center-text">Edit Data</h2>
+        <div class="settings flex column">
+            <Label for="phone_number">Phone Number</Label>
+            <input type="tel" name="phone_number" placeholder="Phone Number">
+        </div>
+        <div class="settings flex column">
+            <Label for="tier">Tier</Label>
+            <input type="text" name="tier" placeholder="Tier" readonly>
+        </div>
+        <div class="settings flex column">
+            <Label for="address">Address</Label>
+            <input type="text" name="address" placeholder="address">
+        </div>
+        <div class="settings flex column">
+            <Label for="full_name">User Name</Label>
+            <input type="text" name="full_name" placeholder="User Name">
+        </div>
+        <h2 class="width100 center-text">Change Password</h2>
+        <div class="settings flex column">
+            <Label for="pass">Password</Label>
+            <input type="password" name="pass" placeholder="Password">
+        </div>
+        <div class="settings flex column">
+            <Label for="check_password">Enter password again</Label>
+            <input type="password" name="check_password" placeholder="Password">
+        </div>
+        <button class="settings-btn" onclick="change_user_data()">Save</button>
+    </div>
+    
+    
+    <script src="../JS/axios.min.js"></script>
+
+    <script src="../JS/index.js"></script>
+    <script>document.onload=settings();</script>
+</body>
+</html>

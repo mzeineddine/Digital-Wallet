@@ -1,4 +1,4 @@
-const base = "http://localhost/Projects/Digital-Wallet/";
+const base = "http://localhost/Projects/Digital-Wallet";
 function alert_message(message){
     alert(message);
     return false;
@@ -94,13 +94,54 @@ function nav_icon_click(){
     navMenu.classList.toggle('active');
 }
 
-
-function transaction(){
-    console.log("in transactions");
+function check_login(){
     if(sessionStorage.getItem("user_id")){
         console.log("id found")
     }else{
         console.log("not found");
         window.location.replace(base+'/Wallet-Client/HTML/login.html');
+    }
+}
+function transaction(){
+    check_login()
+}
+
+function settings(){
+    check_login()
+}
+
+function change_user_data(){
+    const name = document.querySelector('[name="full_name"]').value;
+    const pass = document.querySelector('[name="pass"]').value;
+    const pass2 = document.querySelector('[name="check_password"]').value;
+    const phone_nb = document.querySelector('[name="phone_number"]').value;
+    const address = document.querySelector('[name="address"]').value;
+    
+    let is_checkable = check_missing([name],['name']); 
+
+    if(pass!=pass2){
+        is_checkable = false;
+        alert_message("password does not match");
+    }
+    if (is_checkable){
+        // base+"/Wallet-Server/user/v1/register.php"
+        // "http://localhost/Projects/Digital-Wallet/Wallet-Server/user/v1/register.php"
+        axios.post(base+"/Wallet-Server/user/v1/update_user.php", {
+            full_name: name,
+            pass: pass,
+            phone_nb: phone_nb,
+            address: address,
+            id: sessionStorage.getItem("user_id")
+        })
+        .then(response => {
+            sessionStorage.setItem("user_id",response.data['id']);
+            sessionStorage.setItem("user_name",response.data['name']);
+            sessionStorage.setItem("user_email",response.data['email']);
+            sessionStorage.setItem("user_validation_level",response.data['validation_level']);
+            console.log(sessionStorage.getItem("user_name"));
+            console.log(sessionStorage.getItem("user_email"));
+            console.log(sessionStorage.getItem("user_validation_level"));
+            console.log(response)
+        })
     }
 }

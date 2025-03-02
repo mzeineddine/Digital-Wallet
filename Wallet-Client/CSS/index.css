@@ -91,7 +91,9 @@ body{
 .height25{
     height: 25%;
 }
-
+.max-width75{
+    max-width: 75%;
+}
 img{
     width: 100%;
     height: 100%;
@@ -193,8 +195,11 @@ nav ul li a:hover {
     display: none;
 }
 .main_content{
+    min-height: 75%;
     font-size: 20px;
 }
+
+
 .btn_bg{
     font-weight: bold;
     color: white;
@@ -210,7 +215,7 @@ nav ul li a:hover {
 }
 .sub_button{
         width: 50%;
-        font-size: 1.25em;
+        font-size: 1.6em;
         border-radius: 0.25em;
         padding: 0.25em;
         margin-top: 0.25em;
@@ -219,6 +224,31 @@ nav ul li a:hover {
         color: white;
         background-color: #0A8994;
         margin: 50px;
+}
+
+.settings{
+    min-width: 34%;
+    max-width: 100%;
+}
+.settings label{
+    font-size: 1em;
+    border-radius: 0.25em;
+    margin-top: 0em;
+    margin-right: 1em;
+}
+
+.settings input, button{
+    width: 100%;
+    font-size: 1.25em;
+    border-radius: 0.25em;
+    padding: 0.25em;
+}
+.settings-btn{
+    min-width: 34%;
+    max-width: calc(min(350px,50%));
+    background-color: var(--main-bg-btn-color);
+    color: white;
+    font-weight: bold;
 }
 
 @media (max-width: 600px) {
@@ -265,7 +295,7 @@ nav ul li a:hover {
         font-size: 18px;
     }
     .main_content{
-        font-size: 16px;
+        font-size: 18px;
     }
 }
 @media (max-width: 768px) {
@@ -274,7 +304,7 @@ nav ul li a:hover {
         font-size: 16px;
     }
     .main_content{
-        font-size: 12px;
+        font-size: 16px;
     }
 }
 @media (max-width: 480px) {
@@ -283,7 +313,7 @@ nav ul li a:hover {
         font-size: 12px;
     }
     .main_content{
-        font-size: 10px;
+        font-size: 12px;
     }
 }
 @media (max-width: 320px) {
@@ -292,6 +322,6 @@ nav ul li a:hover {
         font-size: 10px;
     }
     .main_content{
-        font-size: 8px;
+        font-size: 10px;
     }
 }

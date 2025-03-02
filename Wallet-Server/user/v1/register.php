@@ -27,8 +27,9 @@
             }
         }
         $id=-1;
-        $query = $con->prepare("INSERT INTO users (email,pass,name) VALUES (?,?,?)");
-        if(sql_utils::query_execution($query,"sss", [$email, $pass,$full_name])){
+        $time = date("Y-m-d H:i:s");
+        $query = $con->prepare("INSERT INTO users (email,pass,name,registration_date) VALUES (?,?,?,?)");
+        if(sql_utils::query_execution($query,"ssss", [$email, $pass,$full_name,$time])){
             $id = $con->insert_id;
 
             $message = "Verify your email";
