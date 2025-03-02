@@ -1,4 +1,6 @@
 <?php
+    include("../../models/user.php");
+
     include("../../connection/connection.php");
     include("../../utils.php");
     if($con->connect_error){
@@ -24,10 +26,34 @@
                 return;
             }
         }
+        $id=-1;
         $query = $con->prepare("INSERT INTO users (email,pass,name) VALUES (?,?,?)");
         if(sql_utils::query_execution($query,"sss", [$email, $pass,$full_name])){
-            echo "user added";
-            return ;
+            $id = $con->insert_id;
+
+            $message = "Verify your email";
+            $to=$email;
+            $subject="Email Verification For Digital Wallet";
+            $from = 'mohammad.zeineddine50@gmail.com';
+            $body='Please Click On This link <a href="'.$base.'/email_verification.php?id='.$id.'">Verify</a>to activate your account.';
+            $headers = "From:".$from."\r\n";
+            mail($to, $subject, $body, $headers);
+
+            if($id!=-1){
+                $query = $con->prepare("SELECT * FROM users WHERE id=?");
+                if(sql_utils::query_execution($query,"s", [$id])){
+                    $result = $query->get_result();
+                    $user;
+                    while($user_db = mysqli_fetch_assoc($result)){
+                        $user = new user($user_db['id'],$user_db['name'], $user_db['email'], $user_db['validation_level']);
+                    }
+                    if($user){
+                        echo json_encode($user);
+                    }else{
+                        echo json_encode(["message"=>"no user fount"]);
+                    }
+                }
+            }
         }
     }
 //v1

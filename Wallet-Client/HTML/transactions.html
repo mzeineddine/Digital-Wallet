@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="../CSS/index.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="width100 flex row center contnet-start">
+            <div class="flex row width100 center content-start">
+                <div class="logo">
+                    <img class="width100 height100" src="../../assets/logo.png" alt="">
+                </div>
+                <p class="name">Digital&nbsp;Wallet</p>
+            </div>
+            <ul>
+                <li><a href="./dashboard.html">Dashboard</a></li>
+                <li><a href="./transactions.html">Transactions</a></li>
+                <li><a href="./help_center.html">Help&nbsp;Center</a></li>
+                <li><a href="./settings.html">Settings</a></li>
+            </ul> 
+            <a class="logo nav_icon" onclick="nav_icon_click()">
+                <img class="width100 height100" src="../../assets/bars.svg" alt="">
+            </a>
+        </nav>
+
+        <div class="transaction height100 flex column center">
+            <div class="trans_method flex row center wrap">
+                <button class="btn_bg">
+                    <img src="../../assets/receive.png" alt="receive">
+                </button>
+                <button class="btn_bg">
+                    <img src="../../assets/send.png" alt="send">
+                </button>
+            </div>
+        </div>
+        <script src="../JS/axios.min.js"></script>
+        <script src="../JS/index.js"></script>
+        <script>document.onload=transaction();</script>
+    </body>
+</html>

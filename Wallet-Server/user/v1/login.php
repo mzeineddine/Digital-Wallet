@@ -1,4 +1,6 @@
 <?php
+    include("../../models/user.php");
+
     include("../../connection/connection.php");
     include("../../utils.php");
     if($con->connect_error){
@@ -17,12 +19,17 @@
         $query = $con->prepare("SELECT * FROM users WHERE email=? and pass =?;");
         if(sql_utils::query_execution($query,"ss", [$email,$pass])){
             $result = $query->get_result();
-            $response=[];
-            $counter=0;
-            while($user = mysqli_fetch_assoc($result)){
-                $response += $user;
+            $user;
+            while($user_db = mysqli_fetch_assoc($result)){
+                $user = new user($user_db['id'],$user_db['name'], $user_db['email'], $user_db['validation_level']);
             }
-            echo json_encode($response);
+            if($user){
+                echo json_encode($user);
+                return;
+            }else{
+                echo json_encode(["message"=>"no user fount"]);
+                return;
+            }
         }
     }
     // if(isset($data['email']) && isset($data['pass'])){
