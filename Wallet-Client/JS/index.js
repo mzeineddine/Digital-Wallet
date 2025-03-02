@@ -74,16 +74,11 @@ async function login(){
             pass: pass
         });
         sessionStorage.setItem("user_id",response.data['id']);
-        sessionStorage.setItem("user_name",response.data['name']);
-        sessionStorage.setItem("user_email",response.data['email']);
-        sessionStorage.setItem("user_validation_level",response.data['validation_level']);
 
-        console.log(sessionStorage.getItem("user_name"));
-        console.log(sessionStorage.getItem("user_email"));
-        console.log(sessionStorage.getItem("user_validation_level"));
-        console.log(sessionStorage)
-        if(sessionStorage.getItem("user_id")){
-            window.location.replace(base+'/Wallet-Client/HTML/dashboard.html')
+        if(!isNaN(sessionStorage.getItem("user_id"))){
+            window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
+        }else{
+            alert("Email and password mismatch");
         }
     }
     reset_fields_by_name(["email", "pass"]);
@@ -105,17 +100,40 @@ function check_login(){
 function transaction(){
     check_login()
 }
+async function get_user_by_id(id){
+    const response = await axios.post(base+"/Wallet-Server/user/v1/get_user.php", {
+        id: id
+    });
+    console.log(response.data)
+    const name_o = document.querySelector('[name="full_name"]');
+    const phone_nb_o = document.querySelector('[name="phone_number"]');
+    const address_o = document.querySelector('[name="address"]');
+    const tier_o = document.querySelector('[name="tier"]');
 
-function settings(){
-    check_login()
+    name_o.value=response.data['name'];
+    phone_nb_o.value=response.data['phone_nb'];
+    address_o.value=response.data['address'];
+    tier_o.value=response.data['validation_level'];
 }
 
-function change_user_data(){
-    const name = document.querySelector('[name="full_name"]').value;
-    const pass = document.querySelector('[name="pass"]').value;
-    const pass2 = document.querySelector('[name="check_password"]').value;
-    const phone_nb = document.querySelector('[name="phone_number"]').value;
-    const address = document.querySelector('[name="address"]').value;
+function settings(){
+    check_login();
+    get_user_by_id(sessionStorage.getItem("user_id"));
+}
+
+async function change_user_data(){
+    const name_o = document.querySelector('[name="full_name"]');
+    const pass_o = document.querySelector('[name="pass"]');
+    const pass2_o = document.querySelector('[name="check_password"]');
+    const phone_nb_o = document.querySelector('[name="phone_number"]');
+    const address_o = document.querySelector('[name="address"]');
+    const tier_o = document.querySelector('[name="tier"]');
+
+    const name = name_o.value;
+    const pass = pass_o.value;
+    const pass2 = pass2_o.value;
+    const phone_nb = phone_nb_o.value;
+    const address = address_o.value;
     
     let is_checkable = check_missing([name],['name']); 
 
@@ -134,14 +152,9 @@ function change_user_data(){
             id: sessionStorage.getItem("user_id")
         })
         .then(response => {
-            sessionStorage.setItem("user_id",response.data['id']);
-            sessionStorage.setItem("user_name",response.data['name']);
-            sessionStorage.setItem("user_email",response.data['email']);
-            sessionStorage.setItem("user_validation_level",response.data['validation_level']);
-            console.log(sessionStorage.getItem("user_name"));
-            console.log(sessionStorage.getItem("user_email"));
-            console.log(sessionStorage.getItem("user_validation_level"));
-            console.log(response)
+            alert("data updated");
+            reset_fields_by_name(["full_name","pass","tier","check_password","address", "phone_number"])
+            get_user_by_id(sessionStorage.getItem("user_id"));
         })
     }
 }

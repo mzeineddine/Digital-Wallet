@@ -46,7 +46,7 @@
                     $result = $query->get_result();
                     $user;
                     while($user_db = mysqli_fetch_assoc($result)){
-                        $user = new user($user_db['id'],$user_db['name'], $user_db['email'], $user_db['validation_level']);
+                        $user = new user($user_db['id'],$user_db['name'], $user_db['email'], $user_db['validation_level'],$user_db['registration_date'],$user_db['address'], $user_db['phone_nb']);
                     }
                     if($user){
                         echo json_encode($user);
