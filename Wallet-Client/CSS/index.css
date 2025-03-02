@@ -56,6 +56,10 @@ body{
     justify-content: start;
 }
 
+.center-text{
+    text-align: center;
+}
+
 .width100{
     width: 100%;
 }
@@ -188,12 +192,35 @@ nav ul li a:hover {
 .nav_icon {
     display: none;
 }
-
+.main_content{
+    font-size: 20px;
+}
 .btn_bg{
     font-weight: bold;
     color: white;
-    background-color: green;
+    background-color: var(--main-bg-btn-color);
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    padding: 12px;
+    margin: 20px;
 }
+.trans_method p{
+    font-size: 20px;
+}
+.sub_button{
+        width: 50%;
+        font-size: 1.25em;
+        border-radius: 0.25em;
+        padding: 0.25em;
+        margin-top: 0.25em;
+        margin-bottom: 1em;
+        font-weight: bold;
+        color: white;
+        background-color: #0A8994;
+        margin: 50px;
+}
+
 @media (max-width: 600px) {
     nav ul {
         display: none;
@@ -237,11 +264,17 @@ nav ul li a:hover {
         width: 60%;
         font-size: 18px;
     }
+    .main_content{
+        font-size: 16px;
+    }
 }
 @media (max-width: 768px) {
     .main{
         width: 70%;
         font-size: 16px;
+    }
+    .main_content{
+        font-size: 12px;
     }
 }
 @media (max-width: 480px) {
@@ -249,10 +282,16 @@ nav ul li a:hover {
         width: 80%;
         font-size: 12px;
     }
+    .main_content{
+        font-size: 10px;
+    }
 }
 @media (max-width: 320px) {
     .main{
         width: 90%;
         font-size: 10px;
+    }
+    .main_content{
+        font-size: 8px;
     }
 }

@@ -7,7 +7,7 @@
         <link href="../CSS/index.css" rel="stylesheet">
     </head>
     <body>
-        <nav class="width100 flex row center contnet-start">
+        <nav class="width100 flex row center stretch">
             <div class="flex row width100 center content-start">
                 <div class="logo">
                     <img class="width100 height100" src="../../assets/logo.png" alt="">
@@ -25,15 +25,37 @@
             </a>
         </nav>
 
-        <div class="transaction height100 flex column center">
+        <div class="main_content height100 flex column center space-between">
             <div class="trans_method flex row center wrap">
-                <button class="btn_bg">
-                    <img src="../../assets/receive.png" alt="receive">
-                </button>
-                <button class="btn_bg">
-                    <img src="../../assets/send.png" alt="send">
-                </button>
+                <div class="center-text">
+                    <button class="btn_bg">
+                        <img src="../../assets/receive.png" alt="receive">
+                    </button>
+                    <p>receive</p>
+                </div>
+
+                <div class="center-text">
+                    <button class="btn_bg">
+                        <img src="../../assets/send.png" alt="send">
+                    </button>
+                    <p>send</p>
+                </div>
+
+                <div class="center-text">
+                    <button class="btn_bg">
+                        <img src="../../assets/deposit.svg" alt="send">
+                    </button>
+                    <p>deposit</p>
+                </div>
+
+                <div class="center-text">
+                    <button class="btn_bg">
+                        <img src="../../assets/withdraw-money.svg" alt="send">
+                    </button>
+                    <p>withdraw</p>
+                </div>
             </div>
+            <button class="sub_button" onclick="view_trans_hist()">View Transactions History</button>
         </div>
         <script src="../JS/axios.min.js"></script>
         <script src="../JS/index.js"></script>
