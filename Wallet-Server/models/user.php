@@ -63,5 +63,18 @@ class user{
                 }
             }
         }
+
+        static function get_user_by_email_pass($email,$pass){
+            require __DIR__ . '/../connection/connection.php';
+            $query = $con->prepare("SELECT * FROM users WHERE email=? and pass =?;");
+            if(sql_utils::query_execution($query,"ss", [$email,$pass])){
+                $result = $query->get_result();
+                $user= null;
+                while($user_db = mysqli_fetch_assoc($result)){
+                    $user = new user($user_db['id'],$user_db['name'], $user_db['email'], $user_db['validation_level'],$user_db['registration_date'],$user_db['address'], $user_db['phone_nb']);
+                }
+                return $user;
+            }
+        }
     }
 ?>

@@ -20,6 +20,15 @@ function reset_fields_by_name(args){
     }
 }
 
+function split_response(response_data){
+    const [resultString, messageString] = response_data.split('}{');
+    const fixedResultString = resultString + '}';
+    const fixedMessageString = '{' + messageString;
+    const result = JSON.parse(fixedResultString).result;
+    const message = JSON.parse(fixedMessageString).message;
+    return [result,message]
+}
+
 function register(){
     sessionStorage.clear();
     const name = document.querySelector('[name="full_name"]').value;
@@ -41,17 +50,13 @@ function register(){
             pass: pass
         })
         .then(response => {
-            let data = response.data.result;
-            const response_data = response.data;
             console.log(response_data);
-            const [resultString, messageString] = response_data.split('}{');
-            const fixedResultString = resultString + '}';
-            const fixedMessageString = '{' + messageString;
-            const result = JSON.parse(fixedResultString).result;
-            const message = JSON.parse(fixedMessageString).message;
+            [result,message] = split_response(response.data);
             alert(message);
             if(result.hasOwnProperty("id"))
                 sessionStorage.setItem("user_id",result['id']);
+            else
+                alert(message);
             if(sessionStorage.hasOwnProperty("user_id")){
                 window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
     }
@@ -64,6 +69,7 @@ function register(){
 // "http://localhost/Projects/Digital-Wallet/Wallet-Server/user/v1/login.php"
         
 async function login(){
+    sessionStorage.clear();
     const email = document.querySelector('[name="email"]').value;
     const pass = document.querySelector('[name="pass"]').value;
     let is_checkable = check_missing([email,pass],['email','password']);
@@ -78,15 +84,15 @@ async function login(){
             email: email,
             pass: pass
         });
-        sessionStorage.setItem("user_id",response.data['id']);
-
-        if(!isNaN(sessionStorage.getItem("user_id"))){
+        [result,message] = split_response(response.data);
+        if(result.hasOwnProperty("id"))
+            sessionStorage.setItem("user_id",result['id']);
+        else
+            alert(message);
+        if(sessionStorage.hasOwnProperty("user_id"))
             window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
-        }else{
-            alert("Email and password mismatch");
-        }
+        reset_fields_by_name(["email", "pass"]);
     }
-    reset_fields_by_name(["email", "pass"]);
 }
 
 function nav_icon_click(){
