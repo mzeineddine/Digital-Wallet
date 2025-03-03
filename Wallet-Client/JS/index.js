@@ -115,16 +115,16 @@ async function get_user_by_id(id){
     const response = await axios.post(base+"/Wallet-Server/user/v1/get_user.php", {
         id: id
     });
-    console.log(response.data)
+    [result,message]=split_response(response.data);
     const name_o = document.querySelector('[name="full_name"]');
     const phone_nb_o = document.querySelector('[name="phone_number"]');
     const address_o = document.querySelector('[name="address"]');
     const tier_o = document.querySelector('[name="tier"]');
-
-    name_o.value=response.data['name'];
-    phone_nb_o.value=response.data['phone_nb'];
-    address_o.value=response.data['address'];
-    tier_o.value=response.data['validation_level'];
+    console.log(result);
+    name_o.value=result['name'];
+    phone_nb_o.value=result['phone_nb'];
+    address_o.value=result['address'];
+    tier_o.value=result['validation_level'];
 }
 
 function settings(){

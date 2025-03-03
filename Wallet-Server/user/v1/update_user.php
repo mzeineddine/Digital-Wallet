@@ -18,25 +18,9 @@ if(data_utils::missing_parm(4,$data, ["phone_nb", "full_name","address", "id"]))
     $id = $data['id'];
     $pass = hash("sha3-256", $pass);
     if(isset($data['pass']) && $data['pass'] != ""){
-        $query = $con->prepare("UPDATE users SET `name` = ?, pass=?, phone_nb = ?, `address` = ? WHERE id=?;");
-        if(sql_utils::query_execution($query,"ssssi", [$full_name, $pass, $phone_nb,$address,$id])){
-            $affectedRows = $query->affected_rows;
-            if ($affectedRows > 0) {
-                echo "Successfully updated $affectedRows row(s).";
-            } else {
-                echo "No rows were updated.";
-            }
-        }
+        user::update_user_with_pass($full_name, $pass, $phone_nb,$address,$id);
     } else{
-        $query = $con->prepare("UPDATE users SET `name` = ?, phone_nb = ?, `address` = ? WHERE id = ?;");
-        if(sql_utils::query_execution($query,"sssi", [$full_name, $phone_nb,$address,$id])){
-            $affectedRows = $query->affected_rows;
-            if ($affectedRows > 0) {
-                echo "Successfully updated $affectedRows row(s).";
-            } else {
-                echo "No rows were updated.";
-            }
-        }
+        user::update_user_without_pass($full_name, $phone_nb,$address,$id);
     }
 }
 ?>

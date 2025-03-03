@@ -54,12 +54,12 @@ class user{
                 $result = $query->get_result();
                 $user = null;
                 while($user_db = mysqli_fetch_assoc($result)){
-                    $user = new user($user_db['id'],$user_db['name'], $user_db['email'], $user_db['validation_level'],$user_db['registration_date'],$user_db['address'], $user_db['phone_nb']);
+                    $user = new user($user_db['id'],$user_db['name'], $user_db['email'], $user_db['pass'],$user_db['registration_date'],$user_db['validation_level'],$user_db['address'], $user_db['phone_nb']);
                 }
                 if($user){
-                    echo json_encode($user);
+                    return $user;
                 }else{
-                    echo json_encode(["message"=>"user not found"]);
+                    return null;
                 }
             }
         }
@@ -71,9 +71,34 @@ class user{
                 $result = $query->get_result();
                 $user= null;
                 while($user_db = mysqli_fetch_assoc($result)){
-                    $user = new user($user_db['id'],$user_db['name'], $user_db['email'], $user_db['validation_level'],$user_db['registration_date'],$user_db['address'], $user_db['phone_nb']);
+                    $user = new user($user_db['id'],$user_db['name'], $user_db['email'], $user_db['pass'],$user_db['registration_date'],$user_db['validation_level'],$user_db['address'], $user_db['phone_nb']);
                 }
                 return $user;
+            }
+        }
+
+        static function update_user_with_pass($full_name, $pass, $phone_nb,$address,$id){
+            require __DIR__ . '/../connection/connection.php';
+            $query = $con->prepare("UPDATE users SET `name` = ?, pass=?, phone_nb = ?, `address` = ? WHERE id=?;");
+            if(sql_utils::query_execution($query,"ssssi", [$full_name, $pass, $phone_nb,$address,$id])){
+                $affectedRows = $query->affected_rows;
+                if ($affectedRows > 0) {
+                    echo "Successfully updated $affectedRows row(s).";
+                } else {
+                    echo "No rows were updated.";
+                }
+            }
+        }
+        static function update_user_without_pass($full_name, $phone_nb,$address,$id){
+            require __DIR__ . '/../connection/connection.php';
+            $query = $con->prepare("UPDATE users SET `name` = ?, phone_nb = ?, `address` = ? WHERE id = ?;");
+            if(sql_utils::query_execution($query,"sssi", [$full_name, $phone_nb,$address,$id])){
+                $affectedRows = $query->affected_rows;
+                if ($affectedRows > 0) {
+                    echo "Successfully updated $affectedRows row(s).";
+                } else {
+                    echo "No rows were updated.";
+                }
             }
         }
     }
