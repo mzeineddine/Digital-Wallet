@@ -36,7 +36,7 @@
         $balance = (double)($user_wallet->balance);
         $balance -= (double)($data["amount"]);
         if($balance<0){
-            echo "insufficient amount in balance";
+            echo "false";
             return json_encode(["result"=>false]);
         } else{$query = $con->prepare("UPDATE wallets SET `balance` = ? WHERE id = ?;");
             if(sql_utils::query_execution($query,"di", [$balance, $user_wallet->id])){
@@ -44,7 +44,7 @@
                 if ($affectedRows > 0) {
                     echo "Successfully updated $affectedRows row(s).";
                     //add to transaction history
-                    return;
+                    return json_encode(["result"=>true]);;
                 } else {
                     echo "No rows were updated.";
                     return json_encode(["result"=>true]);

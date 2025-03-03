@@ -178,21 +178,66 @@ function withdraw_deposit(){
 async function submit_withdraw(){
     amount = document.querySelector('[name="amount"]').value;
     let is_checkable = check_missing([amount],['amount']); 
-    id = sessionStorage.getItem("user_id");
+    let id = sessionStorage.getItem("user_id");
     const response = await axios.post(base+"/Wallet-Server/user/v1/withdraw.php", {
+        id: id,
+        amount: amount
+    });
+    if(!response.data){
+        alert_message("Insufficient amount in balance");
+    }        
+    withdraw_deposit();
+}
+
+async function submit_deposit(){
+    amount = document.querySelector('[name="amount"]').value;
+    check_missing([amount],['amount']); 
+    let id = sessionStorage.getItem("user_id");
+    const response = await axios.post(base+"/Wallet-Server/user/v1/deposit.php", {
         id: id,
         amount: amount
     });
     withdraw_deposit();
 }
 
-async function submit_deposit(){
-    amount = document.querySelector('[name="amount"]').value;
-    let is_checkable = check_missing([amount],['amount']); 
-    id = sessionStorage.getItem("user_id");
-    const response = await axios.post(base+"/Wallet-Server/user/v1/deposit.php", {
+function randomString(length, chars) {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+}
+
+async function receive(){
+    var code = randomString(10, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    let id = sessionStorage.getItem("user_id");
+    const trans_code = document.getElementById('code');
+    trans_code.innerHTML = code;
+    const response = await axios.post(base+"/Wallet-Server/user/v1/receive.php", {
         id: id,
-        amount: amount
+        transaction_code: code
     });
+    withdraw_deposit();
+}
+
+async function submit_send_trans(){
+    const code_o = document.querySelector("[name='trans_code']");   
+    const amount_o = document.querySelector("[name='amount']");
+    const code = code_o.value;   
+    const amount = amount_o.value;
+
+    let id = sessionStorage.getItem("user_id");
+    let is_checkable = check_missing([amount,code],['amount','code']);
+    if(is_checkable){
+        trans_code = code;
+        const response = await axios.post(base+"/Wallet-Server/user/v1/send.php", {
+            id: id,
+            transaction_code: code,
+            amount: amount
+        });
+        
+        if(!response.data["id"]){
+            alert_message(response.data);
+        }
+    }   
+    reset_fields_by_name(["trans_code","amount"])
     withdraw_deposit();
 }

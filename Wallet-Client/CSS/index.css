@@ -257,6 +257,10 @@ nav ul li a:hover {
     font-weight: bold;
 }
 
+#code{
+    color: var(--main-bg-btn-color);
+    font-size: 2em;
+}
 @media (max-width: 600px) {
     nav ul {
         display: none;

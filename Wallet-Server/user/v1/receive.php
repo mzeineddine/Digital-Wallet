@@ -5,6 +5,7 @@
     if($con->connect_error){
         return;
     }
+
     if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
         $data = json_decode(file_get_contents('php://input'), true);
     } else {
@@ -24,30 +25,25 @@
                 if($wallet->id!=-1){
                     return $wallet;
                 }else{
-                    return null;
+                    return false;
                 }
             }
         }
     }
 
-    if(data_utils::missing_parm(2,$data, ["id","amount"])){
+    if(data_utils::missing_parm(2,$data, ["id","transaction_code"])){
         // $user_wallet= get_wallet($con,$data);
         $user_wallet = get_wallet($con,$data);
-        $balance = (double)($user_wallet->balance);
-        $balance += (double)($data["amount"]);
-        if($balance<0){
-            echo "insufficient amount in balance";
-            return json_encode(["result"=>false]);
-        } else{$query = $con->prepare("UPDATE wallets SET `balance` = ? WHERE id = ?;");
-            if(sql_utils::query_execution($query,"di", [$balance, $user_wallet->id])){
+        {$query = $con->prepare("UPDATE wallets SET `transaction_code` = ? WHERE id = ?;");
+            if(sql_utils::query_execution($query,"si", [$data["transaction_code"], $user_wallet->id])){
                 $affectedRows = $query->affected_rows;
                 if ($affectedRows > 0) {
                     echo "Successfully updated $affectedRows row(s).";
                     //add to transaction history
-                    return;
+                    return json_encode(["result"=>true]);;
                 } else {
                     echo "No rows were updated.";
-                    return json_encode(["result"=>false]);
+                    return json_encode(["result"=>true]);
                 }
             }
         }
