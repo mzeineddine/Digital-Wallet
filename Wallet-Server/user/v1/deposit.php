@@ -24,7 +24,7 @@
                 if($wallet->id!=-1){
                     return $wallet;
                 }else{
-                    return false;
+                    return null;
                 }
             }
         }
