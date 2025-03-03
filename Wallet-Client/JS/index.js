@@ -158,3 +158,30 @@ async function change_user_data(){
         })
     }
 }
+
+async function get_wallet_by_id(id){
+    const response = await axios.post(base+"/Wallet-Server/user/v1/get_wallet.php", {
+        id: id
+    });
+    if(response.data["id"]){
+        document.getElementById("balance").innerHTML="Your balance is "+response.data["balance"];
+    } else{
+        alert("No wallet found. Create one")
+        window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
+    }
+    reset_fields_by_name(["amount"]);
+}
+
+function withdraw(){ 
+    get_wallet_by_id(sessionStorage.getItem("user_id"));
+}
+async function submit_withdraw(){
+    amount = document.querySelector('[name="amount"]').value;
+    let is_checkable = check_missing([amount],['amount']); 
+    id = sessionStorage.getItem("user_id");
+    const response = await axios.post(base+"/Wallet-Server/user/v1/withdraw.php", {
+        id: id,
+        amount: amount
+    });
+    withdraw();
+}
