@@ -129,6 +129,12 @@ img{
 .action{
     min-width: 75%;
 }
+
+.action a{
+    text-decoration: none;
+    color: var(--main-bg-btn-color)
+}
+
 .action label{
     font-size: 1em;
     border-radius: 0.25em;
