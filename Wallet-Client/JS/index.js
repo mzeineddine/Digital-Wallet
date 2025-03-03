@@ -205,8 +205,15 @@ function randomString(length, chars) {
     for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
     return result;
 }
-var rString = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
-function receive(){
-
+async function receive(){
+    var code = randomString(10, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    id = sessionStorage.getItem("user_id");
+    const trans_code = document.getElementById('code');
+    trans_code.innerHTML = code;
+    const response = await axios.post(base+"/Wallet-Server/user/v1/receive.php", {
+        id: id,
+        transaction_code: code
+    });
+    withdraw_deposit();
 }
