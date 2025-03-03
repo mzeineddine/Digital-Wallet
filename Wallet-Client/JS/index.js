@@ -172,7 +172,7 @@ async function get_wallet_by_id(id){
     reset_fields_by_name(["amount"]);
 }
 
-function withdraw(){ 
+function withdraw_deposit(){ 
     get_wallet_by_id(sessionStorage.getItem("user_id"));
 }
 async function submit_withdraw(){
@@ -183,5 +183,16 @@ async function submit_withdraw(){
         id: id,
         amount: amount
     });
-    withdraw();
+    withdraw_deposit();
+}
+
+async function submit_deposit(){
+    amount = document.querySelector('[name="amount"]').value;
+    let is_checkable = check_missing([amount],['amount']); 
+    id = sessionStorage.getItem("user_id");
+    const response = await axios.post(base+"/Wallet-Server/user/v1/deposit.php", {
+        id: id,
+        amount: amount
+    });
+    withdraw_deposit();
 }
