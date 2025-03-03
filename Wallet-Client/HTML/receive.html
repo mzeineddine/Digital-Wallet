@@ -7,6 +7,23 @@
     <link rel="stylesheet" href="../CSS/index.css">
 </head>
 <body>
+    <nav class="width100 flex row center stretch">
+        <div class="flex row width100 center content-start">
+            <div class="logo">
+                <img class="width100 height100" src="../../assets/logo.png" alt="">
+            </div>
+            <p class="name">Digital&nbsp;Wallet</p>
+        </div>
+        <ul>
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="./transactions.html">Transactions</a></li>
+            <li><a href="./help_center.html">Help&nbsp;Center</a></li>
+            <li><a href="./settings.html">Settings</a></li>
+        </ul> 
+        <a class="logo nav_icon" onclick="nav_icon_click()">
+            <img class="width100 height100" src="../../assets/bars.svg" alt="">
+        </a>
+    </nav>
     <div class="main_content height75 flex column  wrap center space-between">
         <h2 class="width100 center-text" id="balance">Your Balance is 0</h2>
         <div class="settings flex column">
