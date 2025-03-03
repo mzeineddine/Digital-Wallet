@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../CSS/index.css">
+</head>
+<body>
+    <div class="main_content height75 flex column  wrap center space-between">
+        <h2 class="width100 center-text" id="balance">Your Balance is 0</h2>
+        <div class="settings flex column">
+            <Label for="amount">Send Amount</Label>
+            <input type="number" name="amount" placeholder="Send Amount">
+        </div>
+        <div class="settings flex column">
+            <Label for="trans_code">Transaction Code</Label>
+            <p type="number" name="trans_code" placeholder="Transaction code"></p>
+        </div>
+    </div> 
+
+    <script src="../JS/axios.min.js"></script>
+    <script src="../JS/index.js"></script>
+    <script>onload=withdraw_deposit();</script>
+    <script>onload=receive();</script>
+</body>
+</html>
