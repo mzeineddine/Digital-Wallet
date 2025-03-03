@@ -20,7 +20,17 @@ function reset_fields_by_name(args){
     }
 }
 
+function split_response(response_data){
+    const [resultString, messageString] = response_data.split('}{');
+    const fixedResultString = resultString + '}';
+    const fixedMessageString = '{' + messageString;
+    const result = JSON.parse(fixedResultString).result;
+    const message = JSON.parse(fixedMessageString).message;
+    return [result,message]
+}
+
 function register(){
+    sessionStorage.clear();
     const name = document.querySelector('[name="full_name"]').value;
     const email = document.querySelector('[name="email"]').value;
     const pass = document.querySelector('[name="pass"]').value;
@@ -40,14 +50,16 @@ function register(){
             pass: pass
         })
         .then(response => {
-            sessionStorage.setItem("user_id",response.data['id']);
-            sessionStorage.setItem("user_name",response.data['name']);
-            sessionStorage.setItem("user_email",response.data['email']);
-            sessionStorage.setItem("user_validation_level",response.data['validation_level']);
-            console.log(sessionStorage.getItem("user_name"));
-            console.log(sessionStorage.getItem("user_email"));
-            console.log(sessionStorage.getItem("user_validation_level"));
-            console.log(response)
+            console.log(response_data);
+            [result,message] = split_response(response.data);
+            alert(message);
+            if(result.hasOwnProperty("id"))
+                sessionStorage.setItem("user_id",result['id']);
+            else
+                alert(message);
+            if(sessionStorage.hasOwnProperty("user_id")){
+                window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
+    }
         })
     }
     reset_fields_by_name(["full_name","pass","email","pass"])
@@ -57,6 +69,7 @@ function register(){
 // "http://localhost/Projects/Digital-Wallet/Wallet-Server/user/v1/login.php"
         
 async function login(){
+    sessionStorage.clear();
     const email = document.querySelector('[name="email"]').value;
     const pass = document.querySelector('[name="pass"]').value;
     let is_checkable = check_missing([email,pass],['email','password']);
@@ -67,21 +80,19 @@ async function login(){
         }
     }
     if (is_checkable){
-        // document.querySelector('[name="email"]').value="";
-        // document.querySelector('[name="pass"]').value="";
         const response = await axios.post(base+"/Wallet-Server/user/v1/login.php", {
             email: email,
             pass: pass
         });
-        sessionStorage.setItem("user_id",response.data['id']);
-
-        if(!isNaN(sessionStorage.getItem("user_id"))){
+        [result,message] = split_response(response.data);
+        if(result.hasOwnProperty("id"))
+            sessionStorage.setItem("user_id",result['id']);
+        else
+            alert(message);
+        if(sessionStorage.hasOwnProperty("user_id"))
             window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
-        }else{
-            alert("Email and password mismatch");
-        }
+        reset_fields_by_name(["email", "pass"]);
     }
-    reset_fields_by_name(["email", "pass"]);
 }
 
 function nav_icon_click(){
@@ -104,16 +115,16 @@ async function get_user_by_id(id){
     const response = await axios.post(base+"/Wallet-Server/user/v1/get_user.php", {
         id: id
     });
-    console.log(response.data)
+    [result,message]=split_response(response.data);
     const name_o = document.querySelector('[name="full_name"]');
     const phone_nb_o = document.querySelector('[name="phone_number"]');
     const address_o = document.querySelector('[name="address"]');
     const tier_o = document.querySelector('[name="tier"]');
-
-    name_o.value=response.data['name'];
-    phone_nb_o.value=response.data['phone_nb'];
-    address_o.value=response.data['address'];
-    tier_o.value=response.data['validation_level'];
+    console.log(result);
+    name_o.value=result['name'];
+    phone_nb_o.value=result['phone_nb'];
+    address_o.value=result['address'];
+    tier_o.value=result['validation_level'];
 }
 
 function settings(){

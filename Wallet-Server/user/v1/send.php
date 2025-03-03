@@ -82,7 +82,6 @@
                     if(sql_utils::query_execution($query,"di", [$balance, $receiver_wallet->id])){
                         $affectedRows = $query->affected_rows;
                         if ($affectedRows > 0) {
-                            echo "Successfully updated $affectedRows row(s).";
                             //add to transaction history
                             return json_encode(["result"=>true]);;
                         } else {
