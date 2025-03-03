@@ -21,6 +21,7 @@ function reset_fields_by_name(args){
 }
 
 function register(){
+    sessionStorage.clear();
     const name = document.querySelector('[name="full_name"]').value;
     const email = document.querySelector('[name="email"]').value;
     const pass = document.querySelector('[name="pass"]').value;
@@ -40,14 +41,20 @@ function register(){
             pass: pass
         })
         .then(response => {
-            sessionStorage.setItem("user_id",response.data['id']);
-            sessionStorage.setItem("user_name",response.data['name']);
-            sessionStorage.setItem("user_email",response.data['email']);
-            sessionStorage.setItem("user_validation_level",response.data['validation_level']);
-            console.log(sessionStorage.getItem("user_name"));
-            console.log(sessionStorage.getItem("user_email"));
-            console.log(sessionStorage.getItem("user_validation_level"));
-            console.log(response)
+            let data = response.data.result;
+            const response_data = response.data;
+            console.log(response_data);
+            const [resultString, messageString] = response_data.split('}{');
+            const fixedResultString = resultString + '}';
+            const fixedMessageString = '{' + messageString;
+            const result = JSON.parse(fixedResultString).result;
+            const message = JSON.parse(fixedMessageString).message;
+            alert(message);
+            if(result.hasOwnProperty("id"))
+                sessionStorage.setItem("user_id",result['id']);
+            if(sessionStorage.hasOwnProperty("user_id")){
+                window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
+    }
         })
     }
     reset_fields_by_name(["full_name","pass","email","pass"])
@@ -67,8 +74,6 @@ async function login(){
         }
     }
     if (is_checkable){
-        // document.querySelector('[name="email"]').value="";
-        // document.querySelector('[name="pass"]').value="";
         const response = await axios.post(base+"/Wallet-Server/user/v1/login.php", {
             email: email,
             pass: pass
