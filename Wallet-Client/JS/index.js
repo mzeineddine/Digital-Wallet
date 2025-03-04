@@ -174,18 +174,19 @@ async function get_wallet_by_id(id){
     const response = await axios.post(base+"/Wallet-Server/user/v1/get_wallet.php", {
         id: id
     });
-    if(response.data["id"]){
-        document.getElementById("balance").innerHTML="Your balance is "+response.data["balance"];
-    } else{
-        alert("No wallet found. Create one")
+    [result,message] = split_response(response.data);
+    if(result.hasOwnProperty("id"))
+        document.getElementById("balance").innerHTML="Your balance is "+result["balance"];
+    else{
+        alert(message);
         window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
     }
     reset_fields_by_name(["amount"]);
 }
 
-function withdraw_deposit(){ 
-    get_wallet_by_id(sessionStorage.getItem("user_id"));
-}
+// function withdraw_deposit(){ 
+//     get_wallet_by_id(sessionStorage.getItem("user_id"));
+// }
 async function submit_withdraw(){
     amount = document.querySelector('[name="amount"]').value;
     let is_checkable = check_missing([amount],['amount']); 
@@ -197,7 +198,7 @@ async function submit_withdraw(){
     if(!response.data){
         alert_message("Insufficient amount in balance");
     }        
-    withdraw_deposit();
+    get_wallet_by_id(sessionStorage.getItem("user_id"));
 }
 
 async function submit_deposit(){
@@ -208,7 +209,8 @@ async function submit_deposit(){
         id: id,
         amount: amount
     });
-    withdraw_deposit();
+    // [result,message]=split_response(response.data);
+    get_wallet_by_id(sessionStorage.getItem("user_id"));
 }
 
 function randomString(length, chars) {
@@ -226,12 +228,14 @@ async function receive(){
         id: id,
         transaction_code: code
     });
-    withdraw_deposit();
+    // [result,message]=split_response(response.data);
+    get_wallet_by_id(sessionStorage.getItem("user_id"));
 }
 
 async function submit_send_trans(){
     const code_o = document.querySelector("[name='trans_code']");   
     const amount_o = document.querySelector("[name='amount']");
+    
     const code = code_o.value;   
     const amount = amount_o.value;
 
@@ -244,11 +248,9 @@ async function submit_send_trans(){
             transaction_code: code,
             amount: amount
         });
-        
-        if(!response.data["id"]){
-            alert_message(response.data);
-        }
+        [result,message] = split_response(response.data);
+        alert(message);
     }   
     reset_fields_by_name(["trans_code","amount"])
-    withdraw_deposit();
+    get_wallet_by_id(sessionStorage.getItem("user_id"));
 }
