@@ -2,9 +2,7 @@
 include("../../models/user.php");
 include("../../connection/connection.php");
 include("../../utils.php");
-if($con->connect_error){
-    return;
-}
+
 if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
     $data = json_decode(file_get_contents('php://input'), true);
 } else {
@@ -18,9 +16,25 @@ if(data_utils::missing_parm(4,$data, ["phone_nb", "full_name","address", "id"]))
     $id = $data['id'];
     $pass = hash("sha3-256", $pass);
     if(isset($data['pass']) && $data['pass'] != ""){
-        user::update_user_with_pass($full_name, $pass, $phone_nb,$address,$id);
+        if(user::update_user_with_pass($full_name, $pass, $phone_nb,$address,$id)){
+            echo json_encode(["message"=>"User Updated"]);
+            echo json_encode(["result"=>"true"]);
+            return;
+        }else{
+            echo json_encode(["message"=>"User Not Updated"]);
+            echo json_encode(["result"=>"false"]);
+            return;
+        }
     } else{
-        user::update_user_without_pass($full_name, $phone_nb,$address,$id);
+        if(user::update_user_without_pass($full_name, $phone_nb,$address,$id)){
+            echo json_encode(["message"=>"User Updated"]);
+            echo json_encode(["result"=>"true"]);
+            return;
+        } else{
+            echo json_encode(["message"=>"User Not Updated"]);
+            echo json_encode(["result"=>"false"]);
+            return;
+        }
     }
 }
 ?>

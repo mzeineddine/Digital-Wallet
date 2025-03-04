@@ -62,5 +62,17 @@
             }
             return false;
         }
+
+        static function delete_wallet($user_id){
+            require __DIR__ . '/../connection/connection.php';
+            $query = $con->prepare("DELETE FROM wallets WHERE user_id = ?;");
+            if(sql_utils::query_execution($query,"i", [$user_id])){
+                $affected_rows = $query->affected_rows;
+                if ($affected_rows > 0) {
+                    return true;
+                } 
+            }
+            return false;
+        }
     }
 ?>

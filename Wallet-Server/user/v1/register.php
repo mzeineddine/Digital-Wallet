@@ -2,7 +2,8 @@
     include("../../connection/connection.php");
     include("../../utils.php");
     include("../../models/user.php");
-    $base = "http://localhost/Projects/Digital-Wallet/Wallet-Server/user/v1";
+    $base1 = "http://localhost/Projects";
+    $base = $base1."/Digital-Wallet/Wallet-Server/user/v1";
     if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
         $data = json_decode(file_get_contents('php://input'), true);
     } else {

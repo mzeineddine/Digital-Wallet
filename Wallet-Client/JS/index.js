@@ -1,4 +1,4 @@
-const base = "http://localhost/Projects/Digital-Wallet";
+const base = "http://localhost/Projects";
 function alert_message(message){
     alert(message);
     return false;
@@ -29,6 +29,12 @@ function split_response(response_data){
     return [result,message]
 }
 
+// async function axios(url,data){
+//     const response = await axios.post(base+url,data);
+//     [result,message]=split_response(response.data);
+//     return [result,message];
+// }
+
 function register(){
     sessionStorage.clear();
     const name = document.querySelector('[name="full_name"]').value;
@@ -44,7 +50,7 @@ function register(){
     if (is_checkable){
         // base+"/Wallet-Server/user/v1/register.php"
         // "http://localhost/Projects/Digital-Wallet/Wallet-Server/user/v1/register.php"
-        axios.post(base+"/Wallet-Server/user/v1/register.php", {
+        axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/register.php", {
             full_name: name,
             email: email,
             pass: pass
@@ -58,7 +64,7 @@ function register(){
             else
                 alert(message);
             if(sessionStorage.hasOwnProperty("user_id")){
-                window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
+                window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/dashboard.html');
     }
         })
     }
@@ -80,7 +86,7 @@ async function login(){
         }
     }
     if (is_checkable){
-        const response = await axios.post(base+"/Wallet-Server/user/v1/login.php", {
+        const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/login.php", {
             email: email,
             pass: pass
         });
@@ -90,7 +96,7 @@ async function login(){
         else
             alert(message);
         if(sessionStorage.hasOwnProperty("user_id"))
-            window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
+            window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/dashboard.html');
         reset_fields_by_name(["email", "pass"]);
     }
 }
@@ -105,14 +111,14 @@ function check_login(){
         console.log("id found")
     }else{
         console.log("not found");
-        window.location.replace(base+'/Wallet-Client/HTML/login.html');
+        window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/login.html');
     }
 }
 function transaction(){
     check_login()
 }
 async function get_user_by_id(id){
-    const response = await axios.post(base+"/Wallet-Server/user/v1/get_user.php", {
+    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/get_user.php", {
         id: id
     });
     [result,message]=split_response(response.data);
@@ -155,23 +161,22 @@ async function change_user_data(){
     if (is_checkable){
         // base+"/Wallet-Server/user/v1/register.php"
         // "http://localhost/Projects/Digital-Wallet/Wallet-Server/user/v1/register.php"
-        axios.post(base+"/Wallet-Server/user/v1/update_user.php", {
+        data = {
             full_name: name,
             pass: pass,
             phone_nb: phone_nb,
             address: address,
             id: sessionStorage.getItem("user_id")
-        })
-        .then(response => {
-            alert("data updated");
-            reset_fields_by_name(["full_name","pass","tier","check_password","address", "phone_number"])
-            get_user_by_id(sessionStorage.getItem("user_id"));
-        })
+        }
+        axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/update_user.php", data);
+        alert("data updated");
+        reset_fields_by_name(["full_name","pass","tier","check_password","address", "phone_number"])
+        get_user_by_id(sessionStorage.getItem("user_id"));
     }
 }
 
 async function get_wallet_by_id(id){
-    const response = await axios.post(base+"/Wallet-Server/user/v1/get_wallet.php", {
+    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/get_wallet.php", {
         id: id
     });
     [result,message] = split_response(response.data);
@@ -179,7 +184,7 @@ async function get_wallet_by_id(id){
         document.getElementById("balance").innerHTML="Your balance is "+result["balance"];
     else{
         alert(message);
-        window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
+        window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/dashboard.html');
     }
 }
 
@@ -190,7 +195,7 @@ async function submit_withdraw(){
     amount = document.querySelector('[name="amount"]').value;
     let is_checkable = check_missing([amount],['amount']); 
     let id = sessionStorage.getItem("user_id");
-    const response = await axios.post(base+"/Wallet-Server/user/v1/withdraw.php", {
+    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/withdraw.php", {
         id: id,
         amount: amount
     });
@@ -204,7 +209,7 @@ async function submit_deposit(){
     amount = document.querySelector('[name="amount"]').value;
     check_missing([amount],['amount']); 
     let id = sessionStorage.getItem("user_id");
-    const response = await axios.post(base+"/Wallet-Server/user/v1/deposit.php", {
+    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/deposit.php", {
         id: id,
         amount: amount
     });
@@ -223,7 +228,7 @@ async function receive(){
     let id = sessionStorage.getItem("user_id");
     const trans_code = document.getElementById('code');
     trans_code.innerHTML = code;
-    const response = await axios.post(base+"/Wallet-Server/user/v1/receive.php", {
+    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/receive.php", {
         id: id,
         transaction_code: code
     });
@@ -242,7 +247,7 @@ async function submit_send_trans(){
     let is_checkable = check_missing([amount,code],['amount','code']);
     if(is_checkable){
         trans_code = code;
-        const response = await axios.post(base+"/Wallet-Server/user/v1/send.php", {
+        const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/send.php", {
             id: id,
             transaction_code: code,
             amount: amount
@@ -252,4 +257,34 @@ async function submit_send_trans(){
     }   
     reset_fields_by_name(["trans_code","amount"])
     get_wallet_by_id(sessionStorage.getItem("user_id"));
+}
+
+function view_trans_hist(){
+    window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/trans_hist.html');
+}
+
+async function get_trans_hist(){
+    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/get_transactions_by_id.php", {
+        id: sessionStorage.getItem("user_id"),
+    });
+    [result,message] = split_response(response.data);
+    console.log(result);
+    const table = document.getElementById("trans_hist_table");
+    for(let i = 0; i<result.length;i++){
+        row = "<tr>";
+            
+            row+="<td>";row+=result[i]["sender_name"];row+="</td>";
+            row+="<td>";row+=result[i]["receiver_name"];row+="</td>";
+            row+="<td>";row+=result[i]["transaction_date"];row+="</td>";
+            row+="<td>";row+=result[i]["amount"];row+="</td>";
+        row +="</tr>";
+        table.innerHTML+=row;
+    }
+}
+
+function logout(){
+    sessionStorage.clear();
+    if(!sessionStorage.getItem("user_id")){
+        window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/login.html');
+    }
 }
