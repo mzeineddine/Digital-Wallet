@@ -83,9 +83,9 @@ class user{
             if(sql_utils::query_execution($query,"ssssi", [$full_name, $pass, $phone_nb,$address,$id])){
                 $affectedRows = $query->affected_rows;
                 if ($affectedRows > 0) {
-                    echo "Successfully updated $affectedRows row(s).";
+                    return true;
                 } else {
-                    echo "No rows were updated.";
+                    return false;
                 }
             }
         }
@@ -99,6 +99,18 @@ class user{
                 } else {
                     echo "No rows were updated.";
                 }
+            }
+        }
+
+        static function update_user_validation($validation_level,$id){
+            require __DIR__ . '/../connection/connection.php';
+            $query = $con->prepare("UPDATE users set validation_level=0 WHERE id=?");
+            if(sql_utils::query_execution($query,"i", [$id])){
+                $result = $query->get_result();
+                if($query->affected_rows==1){
+                    return true;
+                }
+                return false;
             }
         }
     }

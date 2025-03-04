@@ -1,6 +1,6 @@
 <?php
-    include("../../models/wallet.php");
     include("../../connection/connection.php");
+    include("../../models/wallet.php");
     include("../../utils.php");
     if($con->connect_error){
         return;
@@ -12,20 +12,15 @@
     }
     if(data_utils::missing_parm(1,$data, ["id"])){
         $id=$data['id'];
-        $query = $con->prepare("SELECT * FROM wallets WHERE user_id=?");
-        if(sql_utils::query_execution($query,"i", [$id])){
-            $result = $query->get_result();
-            $wallet=new wallet(-1 ,-1,-1 );
-            while($wallet_db = mysqli_fetch_assoc($result)){
-                $wallet = new wallet($wallet_db["id"], $wallet_db["user_id"],$wallet_db["balance"], $wallet_db["transaction_code"]);
-            }
-            if($wallet->id!=-1){
-                echo json_encode($wallet);
-                return;
-            }else{
-                echo json_encode(["message"=>"no wallet fount"]);
-                return;
-            }
+        $wallet = wallet::get_wallet_by_id($id);
+        if($wallet){
+            echo json_encode(["result"=>$wallet]);
+            echo json_encode(["message"=>"Wallet found"]);
+            return;
+        } else{
+            echo json_encode(["result"=>""]);
+            echo json_encode(["message"=>"Wallet not found add one found"]);
+            return;
         }
     }
 ?>
