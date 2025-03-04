@@ -249,6 +249,10 @@ nav ul li a:hover {
     border-radius: 0.25em;
     padding: 0.25em;
 }
+
+.settings input[name=tier]{
+    background-color: gray;
+}
 .settings-btn{
     min-width: 34%;
     max-width: calc(min(350px,50%));
@@ -261,6 +265,31 @@ nav ul li a:hover {
     color: var(--main-bg-btn-color);
     font-size: 2em;
 }
+
+.logedin-btn{
+    background-color: rgb(220, 29, 29);
+    margin: 0.5em;
+}
+
+#trans_hist_table{
+    overflow: hidden;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    min-width: 400px;
+}
+
+#trans_hist_table th, #trans_hist_table td {
+    padding: 7px 7px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#trans_hist_table th {
+    background-color: var(--main-bg-btn-color);
+    color: white;
+}
+
 @media (max-width: 600px) {
     nav ul {
         display: none;

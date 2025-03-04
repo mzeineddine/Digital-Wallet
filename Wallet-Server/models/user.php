@@ -113,5 +113,17 @@ class user{
                 return false;
             }
         }
+
+        static function delete_user($id){
+            require __DIR__ . '/../connection/connection.php';
+            $query = $con->prepare("DELETE FROM users WHERE id=?");
+            if(sql_utils::query_execution($query,"i", [$id])){
+                $result = $query->get_result();
+                if($query->affected_rows==1){
+                    return true;
+                }
+                return false;
+            }
+        }
     }
 ?>

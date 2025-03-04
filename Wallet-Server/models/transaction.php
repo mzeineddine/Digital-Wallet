@@ -1,18 +1,5 @@
 <?php
     // id,sender_id,receiver_id,transaction_date,amount	
-    class transaction_name{
-        public $sender_name;
-        public $receiver_name;
-        public $transaction_date;
-        public $amount;
-        function __construct($sender_name,$receiver_name,$transaction_date,$amount){
-            $this->sender_name=$sender_name;
-            $this->receiver_name=$receiver_name;
-            $this->transaction_date=$transaction_date;
-            $this->amount=$amount;
-        }
-
-    }
     class transaction{
         public $id;
         public $sender_id;
@@ -50,9 +37,22 @@
                     $sender = user::get_user_by_id($trans_db["sender_id"]);
                     $receiver = user::get_user_by_id($trans_db["receiver_id"]);
 
-
-                    $transaction_name = new transaction_name($sender->name, $receiver->name,$trans_db["transaction_date"],$trans_db["amount"]);
-                    $transactions[]=$transaction_name;
+                    if($sender && $receiver){
+                        $transaction_name = new transaction_name($sender->name, $receiver->name,$trans_db["transaction_date"],$trans_db["amount"]);
+                        $transactions[]=$transaction_name;
+                    } else if($sender && $trans_db["receiver_id"]==0){
+                        $transaction_name = new transaction_name($sender->name, "Withdraw",$trans_db["transaction_date"],$trans_db["amount"]);
+                        $transactions[]=$transaction_name;
+                    } else if($trans_db["sender_id"]==0 && $receiver){
+                        $transaction_name = new transaction_name("Deposit", $receiver->name,$trans_db["transaction_date"],$trans_db["amount"]);                        
+                        $transactions[]=$transaction_name;
+                    } else if(!$sender && $receiver){
+                            $transaction_name = new transaction_name("Deleted Account", $receiver->name,$trans_db["transaction_date"],$trans_db["amount"]);                        
+                            $transactions[]=$transaction_name;
+                    }else if($sender && !$receiver){
+                        $transaction_name = new transaction_name($sender->name, "Deleted Account",$trans_db["transaction_date"],$trans_db["amount"]);                        
+                        $transactions[]=$transaction_name;
+                    }
                 }
                 if(sizeof($transactions)>0){
                     return $transactions;
@@ -61,6 +61,20 @@
                 }
             }
         }
+    }
+
+    class transaction_name{
+        public $sender_name;
+        public $receiver_name;
+        public $transaction_date;
+        public $amount;
+        function __construct($sender_name,$receiver_name,$transaction_date,$amount){
+            $this->sender_name=$sender_name;
+            $this->receiver_name=$receiver_name;
+            $this->transaction_date=$transaction_date;
+            $this->amount=$amount;
+        }
+
     }
 
 ?>

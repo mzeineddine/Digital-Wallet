@@ -2,9 +2,6 @@
     include("../../connection/connection.php");
     include("../../models/wallet.php");
     include("../../utils.php");
-    if($con->connect_error){
-        return;
-    }
     if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
         $data = json_decode(file_get_contents('php://input'), true);
     } else {

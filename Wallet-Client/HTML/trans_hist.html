@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../CSS/index.css">
+</head>
+<body>
+
+    <nav class="width100 flex row center stretch">
+        <div class="flex row width100 center content-start">
+            <div class="logo">
+                <img class="width100 height100" src="../../assets/logo.png" alt="">
+            </div>
+            <p class="name">Digital&nbsp;Wallet</p>
+        </div>
+        <ul>
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="./transactions.html">Transactions</a></li>
+            <li><a href="./help_center.html">Help&nbsp;Center</a></li>
+            <li><a href="./settings.html">Settings</a></li>
+        </ul> 
+        <a class="logo nav_icon" onclick="nav_icon_click()">
+            <img class="width100 height100" src="../../assets/bars.svg" alt="">
+        </a>
+    </nav>
+
+    <table id="trans_hist_table" class="width100">
+        <tr>
+            <th>Sender Name</th>
+            <th>Reciever Name</th>
+            <th>Transaction Date</th>
+            <th>Amount</th>
+        </tr>
+    </table>
+
+    <script src="../JS/axios.min.js"></script>
+    <script src="../JS/index.js"></script>
+    <script>onload=get_trans_hist()</script>
+
+</body>
+</html>
