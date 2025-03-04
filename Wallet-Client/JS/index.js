@@ -181,7 +181,6 @@ async function get_wallet_by_id(id){
         alert(message);
         window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
     }
-    reset_fields_by_name(["amount"]);
 }
 
 // function withdraw_deposit(){ 
