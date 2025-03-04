@@ -288,3 +288,17 @@ function logout(){
         window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/login.html');
     }
 }
+
+async function delete_account(){
+    if(confirm("Do you want to delete the account and the wallet as well?")){
+        const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/delete_user_and_wallet.php", {
+            id: sessionStorage.getItem("user_id"),
+        });
+        [result,message] = split_response(response.data);
+        if(result){
+            logout();
+        }else{
+            alert(message);
+        }
+    }
+}
