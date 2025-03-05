@@ -9,7 +9,7 @@
     }
 
     if(data_utils::missing_parm(2,$data, ["id","transaction_code"])){
-        $wallet = wallet::create_wallet($data["id"], $data["transaction_code"]);
+        $wallet = wallet::create_wallet($data["id"], $data["transaction_code"],$con);
         if($wallet){
             echo json_encode(["result"=>$wallet]);
             echo json_encode(["message"=>"wallet created"]);
