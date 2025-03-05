@@ -56,7 +56,7 @@ function register(){
         })
         .then(response => {
             console.log(response.data);
-            [result,message] = split_response(response.data);
+            const [result,message] = split_response(response.data);
             alert(message);
             if(result.hasOwnProperty("id"))
                 sessionStorage.setItem("user_id",result['id']);
@@ -89,7 +89,7 @@ async function login(){
             email: email,
             pass: pass
         });
-        [result,message] = split_response(response.data);
+        const [result,message] = split_response(response.data);
         if(result.hasOwnProperty("id"))
             sessionStorage.setItem("user_id",result['id']);
         else
@@ -120,7 +120,7 @@ async function get_user_by_id(id){
     const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/get_user.php", {
         id: id
     });
-    [result,message]=split_response(response.data);
+    const [result,message]=split_response(response.data);
     const name_o = document.querySelector('[name="full_name"]');
     const phone_nb_o = document.querySelector('[name="phone_number"]');
     const address_o = document.querySelector('[name="address"]');
@@ -176,7 +176,7 @@ async function get_wallet_by_id_without_message(id){
     const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/get_wallet.php", {
         id: id
     });
-    [result,message] = split_response(response.data);
+    const [result,message] = split_response(response.data);
     if(result.hasOwnProperty("id")){
         document.getElementById("balance").innerHTML="Your balance is "+result["balance"];
         return true;
@@ -189,7 +189,7 @@ async function get_wallet_by_id(id){
     const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/get_wallet.php", {
         id: id
     });
-    [result,message] = split_response(response.data);
+    const [result,message] = split_response(response.data);
     if(result.hasOwnProperty("id")){
         document.getElementById("balance").innerHTML="Your balance is "+result["balance"];
         return true;
@@ -262,7 +262,7 @@ async function submit_send_trans(){
             transaction_code: code,
             amount: amount
         });
-        [result,message] = split_response(response.data);
+        const [result,message] = split_response(response.data);
         alert(message);
     }   
     reset_fields_by_name(["trans_code","amount"])
@@ -277,7 +277,7 @@ async function get_trans_hist(){
     const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/get_transactions_by_id.php", {
         id: sessionStorage.getItem("user_id"),
     });
-    [result,message] = split_response(response.data);
+    const [result,message] = split_response(response.data);
     console.log(result);
     const table = document.getElementById("trans_hist_table");
     for(let i = 0; i<result.length;i++){
@@ -304,7 +304,7 @@ async function delete_account(){
         const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/delete_user_and_wallet.php", {
             id: sessionStorage.getItem("user_id"),
         });
-        [result,message] = split_response(response.data);
+        const [result,message] = split_response(response.data);
         if(result){
             logout();
         }else{
@@ -319,7 +319,7 @@ async function register_wallet(){
         transaction_code: randomString(10, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
     });
     console.log(response.data);
-    [result,message] = split_response(response.data);
+    const [result,message] = split_response(response.data);
     window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/dashboard.html');
 }
 function go_to_login(){
