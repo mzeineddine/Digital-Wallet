@@ -101,7 +101,7 @@ async function login(){
 }
 
 function nav_icon_click(){
-    var navMenu = document.querySelector("nav ul");
+    let navMenu = document.querySelector("nav ul");
     navMenu.classList.toggle('active');
 }
 
@@ -228,13 +228,13 @@ async function submit_deposit(){
 }
 
 function randomString(length, chars) {
-    var result = '';
-    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    let result = '';
+    for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
     return result;
 }
 
 async function receive(){
-    var code = randomString(10, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    let code = randomString(10, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
     let id = sessionStorage.getItem("user_id");
     const trans_code = document.getElementById('code');
     trans_code.innerHTML = code;
@@ -315,7 +315,8 @@ async function delete_account(){
 
 async function register_wallet(){
     const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/add_wallet.php", {
-        id: sessionStorage.getItem("user_id")
+        id: sessionStorage.getItem("user_id"),
+        transaction_code: randomString(10, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
     });
     console.log(response.data);
     [result,message] = split_response(response.data);

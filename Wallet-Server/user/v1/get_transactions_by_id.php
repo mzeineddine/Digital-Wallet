@@ -9,7 +9,7 @@
     }
     if(data_utils::missing_parm(1,$data, ["id"])){
         $time = date("Y-m-d H:i:s");
-        $transactions = transaction::get_transactions_by_user_id_sorted_by_time($data["id"],);
+        $transactions = transaction::get_transactions_by_user_id_sorted_by_time($data["id"],$con);
         $result = [];
         foreach($transactions as $tran){
             $result[]=$tran;

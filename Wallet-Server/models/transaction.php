@@ -14,8 +14,7 @@
             $this->amount=$amount;
         }
 
-        static function create_transaction($sender_id,$receiver_id,$transaction_date,$amount){
-            require __DIR__ . '/../connection/connection.php';
+        static function create_transaction($sender_id,$receiver_id,$transaction_date,$amount,$con){
             $query = $con->prepare("INSERT INTO transactions (sender_id,receiver_id,transaction_date,amount) VALUES (?,?,?,?);");
             if(sql_utils::query_execution($query,"iisi", [$sender_id,$receiver_id,$transaction_date,$amount])){
                 $id = $con->insert_id;
@@ -24,8 +23,7 @@
             }
         }
 
-        static function get_transactions_by_user_id_sorted_by_time($user_id){
-            require __DIR__ . '/../connection/connection.php';
+        static function get_transactions_by_user_id_sorted_by_time($user_id, $con){
             require __DIR__ . '/user.php';
             $query = $con->prepare("SELECT * FROM transactions WHERE sender_id=? or receiver_id=? ORDER BY transaction_date DESC;");
             if(sql_utils::query_execution($query,"ii", [$user_id,$user_id])){
@@ -34,8 +32,8 @@
                 while($trans_db = mysqli_fetch_assoc($result)){
                     // $transaction = new transaction($trans_db["id"],$trans_db["sender_id"],$trans_db["receiver_id"],$trans_db["transaction_date"],$trans_db["amount"]);
                     
-                    $sender = user::get_user_by_id($trans_db["sender_id"]);
-                    $receiver = user::get_user_by_id($trans_db["receiver_id"]);
+                    $sender = user::get_user_by_id($trans_db["sender_id"],$con);
+                    $receiver = user::get_user_by_id($trans_db["receiver_id"],$con);
 
                     if($sender && $receiver){
                         $transaction_name = new transaction_name($sender->name, $receiver->name,$trans_db["transaction_date"],$trans_db["amount"]);

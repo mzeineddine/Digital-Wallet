@@ -12,11 +12,11 @@
     }
     if(data_utils::missing_parm(2,$data, ["id","amount"])){
         // $user_wallet= get_wallet($con,$data);
-        $user_wallet = wallet::get_wallet_by_id($data["id"]);
+        $user_wallet = wallet::get_wallet_by_id($data["id"],$con);
         if($user_wallet){   
             $balance = (double)($user_wallet->balance);
             $balance -= (double)abs($data["amount"]);
-            if(wallet::update_wallet_balance($user_wallet->id, $balance)){
+            if(wallet::update_wallet_balance($user_wallet->id, $balance,$con)){
                 // calling add_transaction api "sender_id","receiver_id","amount"
                 $post_data=array("sender_id" => $data["id"], "receiver_id"=> "0", "amount"=>$data["amount"]);
                 $curl = curl_init();

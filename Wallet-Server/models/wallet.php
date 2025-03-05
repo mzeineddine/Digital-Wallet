@@ -11,18 +11,16 @@
             $this->transaction_code=$transaction_code;
         }
 
-        static function create_wallet($id){
-            require __DIR__ . '/../connection/connection.php';
-            $query = $con->prepare("INSERT INTO wallets (user_id) VALUES (?)");
-            if(sql_utils::query_execution($query,"i", [$id])){
+        static function create_wallet($id, $code,$con){
+            $query = $con->prepare("INSERT INTO wallets (user_id, transaction_code) VALUES (?,?)");
+            if(sql_utils::query_execution($query,"i", [$id, $code])){
                 $wallet_id = $con->insert_id;
                 $wallet = new wallet($wallet_id,$id, 0);
                 return $wallet;
             }
         }
 
-        static function get_wallet_by_id($id){
-            require __DIR__ . '/../connection/connection.php';
+        static function get_wallet_by_id($id,$con){
             $query = $con->prepare("SELECT * FROM wallets WHERE user_id=?");
             if(sql_utils::query_execution($query,"i", [$id])){
                 $result = $query->get_result();
@@ -35,8 +33,7 @@
             return false;
         }
 
-        static function get_wallet_by_transaction_code($transaction_code){
-            require __DIR__ . '/../connection/connection.php';
+        static function get_wallet_by_transaction_code($transaction_code, $con){
             $query = $con->prepare("SELECT * FROM wallets WHERE transaction_code=?");
             if(sql_utils::query_execution($query,"s", [$transaction_code])){
                 $result = $query->get_result();
@@ -50,8 +47,7 @@
             }
         }
 
-        static function update_wallet_balance($id,$balance){
-            require __DIR__ . '/../connection/connection.php';
+        static function update_wallet_balance($id,$balance,$con){
             $query = $con->prepare("UPDATE wallets SET `balance` = ? WHERE id = ?;");
             if(sql_utils::query_execution($query,"di", [$balance, $id])){
                 $affected_rows = $query->affected_rows;
@@ -62,8 +58,7 @@
             return false;
         }
 
-        static function update_wallet_transaction_code($id,$code){
-            require __DIR__ . '/../connection/connection.php';
+        static function update_wallet_transaction_code($id,$code,$con){
             $query = $con->prepare("UPDATE wallets SET `transaction_code` = ? WHERE id = ?;");
             if(sql_utils::query_execution($query,"si", [$code, $id])){
                 $affected_rows = $query->affected_rows;
@@ -74,8 +69,7 @@
             return false;
         }
 
-        static function delete_wallet($user_id){
-            require __DIR__ . '/../connection/connection.php';
+        static function delete_wallet($user_id,$con){
             $query = $con->prepare("DELETE FROM wallets WHERE user_id = ?;");
             if(sql_utils::query_execution($query,"i", [$user_id])){
                 $affected_rows = $query->affected_rows;

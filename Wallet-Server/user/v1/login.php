@@ -15,7 +15,7 @@
         $email = $data['email'];
         $pass = $data['pass'];
         $pass = hash("sha3-256", $pass);
-        $user=user::get_user_by_email_pass($email,$pass);
+        $user=user::get_user_by_email_pass($email,$pass,$con);
         if($user){
             echo json_encode(["result"=>$user]);
             echo json_encode(["message"=>"user found"]);
