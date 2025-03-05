@@ -59,7 +59,21 @@ class user{
                 }
             }
         }
-
+        static function get_user_id_by_email($email,$con){
+            $query = $con->prepare("SELECT * FROM users WHERE email=?");
+            if(sql_utils::query_execution($query,"s", [$email])){
+                $result = $query->get_result();
+                $user = null;
+                while($user_db = mysqli_fetch_assoc($result)){
+                    $user = new user($user_db['id'],$user_db['name'], $user_db['email'], $user_db['pass'],$user_db['registration_date'],$user_db['validation_level'],$user_db['address'], $user_db['phone_nb']);
+                }
+                if($user){
+                    return $user->id;
+                }else{
+                    return null;
+                }
+            }
+        }
         static function get_user_by_email_pass($email,$pass,$con){
             $query = $con->prepare("SELECT * FROM users WHERE email=? and pass =?;");
             if(sql_utils::query_execution($query,"ss", [$email,$pass])){
