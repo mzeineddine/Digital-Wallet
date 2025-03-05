@@ -2,7 +2,7 @@
     include("../../connection/connection.php");
     include("../../utils.php");
     include("../../models/user.php");
-    $base1 = "13.38.107.39";
+    $base1 = "http://13.38.107.39";
     $base = $base1."/Digital-Wallet/Wallet-Server/user/v1";
     if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
         $data = json_decode(file_get_contents('php://input'), true);
