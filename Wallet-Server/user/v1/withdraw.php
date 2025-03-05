@@ -18,7 +18,7 @@
             $balance -= (double)abs($data["amount"]);
             if(wallet::update_wallet_balance($user_wallet->id, $balance)){
                 // calling add_transaction api "sender_id","receiver_id","amount"
-                $post_data=array("sender_id" => "0", "receiver_id"=> $data["id"], "amount"=>$data["amount"]);
+                $post_data=array("sender_id" => $data["id"], "receiver_id"=> "0", "amount"=>$data["amount"]);
                 $curl = curl_init();
                 curl_setopt($curl, CURLOPT_POST, 1);
                 if ($post_data)

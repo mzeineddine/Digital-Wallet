@@ -1,4 +1,5 @@
 const base = "http://localhost/Projects";
+const api_base = "http://localhost/Projects";
 function alert_message(message){
     alert(message);
     return false;
@@ -30,7 +31,7 @@ function split_response(response_data){
 }
 
 // async function axios(url,data){
-//     const response = await axios.post(base+url,data);
+//     const response = await axios.post(api_base+url,data);
 //     [result,message]=split_response(response.data);
 //     return [result,message];
 // }
@@ -48,9 +49,7 @@ function register(){
         }
     }
     if (is_checkable){
-        // base+"/Wallet-Server/user/v1/register.php"
-        // "http://localhost/Projects/Digital-Wallet/Wallet-Server/user/v1/register.php"
-        axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/register.php", {
+        axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/register.php", {
             full_name: name,
             email: email,
             pass: pass
@@ -86,7 +85,7 @@ async function login(){
         }
     }
     if (is_checkable){
-        const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/login.php", {
+        const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/login.php", {
             email: email,
             pass: pass
         });
@@ -118,7 +117,7 @@ function transaction(){
     check_login()
 }
 async function get_user_by_id(id){
-    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/get_user.php", {
+    const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/get_user.php", {
         id: id
     });
     [result,message]=split_response(response.data);
@@ -159,8 +158,6 @@ async function change_user_data(){
         alert_message("password does not match");
     }
     if (is_checkable){
-        // base+"/Wallet-Server/user/v1/register.php"
-        // "http://localhost/Projects/Digital-Wallet/Wallet-Server/user/v1/register.php"
         data = {
             full_name: name,
             pass: pass,
@@ -168,7 +165,7 @@ async function change_user_data(){
             address: address,
             id: sessionStorage.getItem("user_id")
         }
-        axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/update_user.php", data);
+        axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/update_user.php", data);
         alert("data updated");
         reset_fields_by_name(["full_name","pass","tier","check_password","address", "phone_number"])
         get_user_by_id(sessionStorage.getItem("user_id"));
@@ -176,7 +173,7 @@ async function change_user_data(){
 }
 
 async function get_wallet_by_id_without_message(id){
-    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/get_wallet.php", {
+    const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/get_wallet.php", {
         id: id
     });
     [result,message] = split_response(response.data);
@@ -189,7 +186,7 @@ async function get_wallet_by_id_without_message(id){
 }
 
 async function get_wallet_by_id(id){
-    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/get_wallet.php", {
+    const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/get_wallet.php", {
         id: id
     });
     [result,message] = split_response(response.data);
@@ -202,20 +199,18 @@ async function get_wallet_by_id(id){
     }
 }
 
-// function withdraw_deposit(){ 
-//     get_wallet_by_id(sessionStorage.getItem("user_id"));
-// }
 async function submit_withdraw(){
     amount = document.querySelector('[name="amount"]').value;
     let is_checkable = check_missing([amount],['amount']); 
     let id = sessionStorage.getItem("user_id");
-    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/withdraw.php", {
+    const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/withdraw.php", {
         id: id,
         amount: amount
     });
     if(!response.data){
         alert_message("Insufficient amount in balance");
     }        
+    reset_fields_by_name(["amount"]);
     get_wallet_by_id(sessionStorage.getItem("user_id"));
 }
 
@@ -223,11 +218,12 @@ async function submit_deposit(){
     amount = document.querySelector('[name="amount"]').value;
     check_missing([amount],['amount']); 
     let id = sessionStorage.getItem("user_id");
-    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/deposit.php", {
+    const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/deposit.php", {
         id: id,
         amount: amount
     });
     // [result,message]=split_response(response.data);
+    reset_fields_by_name(["amount"]);
     get_wallet_by_id(sessionStorage.getItem("user_id"));
 }
 
@@ -242,7 +238,7 @@ async function receive(){
     let id = sessionStorage.getItem("user_id");
     const trans_code = document.getElementById('code');
     trans_code.innerHTML = code;
-    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/receive.php", {
+    const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/receive.php", {
         id: id,
         transaction_code: code
     });
@@ -261,7 +257,7 @@ async function submit_send_trans(){
     let is_checkable = check_missing([amount,code],['amount','code']);
     if(is_checkable){
         trans_code = code;
-        const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/send.php", {
+        const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/send.php", {
             id: id,
             transaction_code: code,
             amount: amount
@@ -278,7 +274,7 @@ function view_trans_hist(){
 }
 
 async function get_trans_hist(){
-    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/get_transactions_by_id.php", {
+    const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/get_transactions_by_id.php", {
         id: sessionStorage.getItem("user_id"),
     });
     [result,message] = split_response(response.data);
@@ -305,7 +301,7 @@ function logout(){
 
 async function delete_account(){
     if(confirm("Do you want to delete the account and the wallet as well?")){
-        const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/delete_user_and_wallet.php", {
+        const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/delete_user_and_wallet.php", {
             id: sessionStorage.getItem("user_id"),
         });
         [result,message] = split_response(response.data);
@@ -318,7 +314,7 @@ async function delete_account(){
 }
 
 async function register_wallet(){
-    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/add_wallet.php", {
+    const response = await axios.post(api_base+"/Digital-Wallet/Wallet-Server/user/v1/add_wallet.php", {
         id: sessionStorage.getItem("user_id")
     });
     console.log(response.data);
