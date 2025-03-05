@@ -13,7 +13,7 @@
 
         static function create_wallet($id, $code,$con){
             $query = $con->prepare("INSERT INTO wallets (user_id, transaction_code) VALUES (?,?);");
-            if(sql_utils::query_execution($query,"id", [$id, $code])){
+            if(sql_utils::query_execution($query,"is", [$id, $code])){
                 $wallet_id = $con->insert_id;
                 $wallet = new wallet($wallet_id,$id, 0);
                 return $wallet;
