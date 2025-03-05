@@ -1,4 +1,5 @@
 <?php
+    include("../../connection/connection.php");
     include("../../models/wallet.php");
     include("../../utils.php");
     $base = "http://13.38.107.39/";
