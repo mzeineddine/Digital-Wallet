@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../CSS/index.css">
 </head>
 <body>
-    <script src="../JS/index.js"></script>
     <nav class="width100 flex row center contnet-start">
         <div class="flex row width100 center content-start">
             <div class="logo">
@@ -25,5 +24,15 @@
             <img class="width100 height100" src="../../assets/bars.svg" alt="">
         </a>
     </nav>
+
+    <div class="main_content height75 flex column  wrap center space-between">
+        <h2 class="width100 center-text" id="balance">Your Balance is 0</h2>
+        <button class="settings-btn" id="btn" onclick="register_wallet()">Add Wallet</button>
+        <button class="settings-btn" id="btn_login" onclick="go_to_login()">Login</button>
+
+    </div>
+    <script src="../JS/axios.min.js"></script>
+    <script src="../JS/index.js"></script>
+    <script>onload=dashboard_load()</script>
 </body>
 </html>

@@ -4,11 +4,21 @@
         public $user_id;
         public $balance;
         public $transaction_code;
-        function __construct($id, $user_id, $balance, $transaction_code=null){
+        function __construct($id, $user_id, $balance=0, $transaction_code=null){
             $this->id=$id;
             $this->user_id=$user_id;
             $this->balance=$balance;
             $this->transaction_code=$transaction_code;
+        }
+
+        static function create_wallet($id){
+            require __DIR__ . '/../connection/connection.php';
+            $query = $con->prepare("INSERT INTO wallets (user_id) VALUES (?)");
+            if(sql_utils::query_execution($query,"i", [$id])){
+                $wallet_id = $con->insert_id;
+                $user = new wallet($wallet_id,$id, 0);
+                return $user;
+            }
         }
 
         static function get_wallet_by_id($id){
