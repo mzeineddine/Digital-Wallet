@@ -32,6 +32,7 @@
                 }
                 return $wallet;
             }
+            return false;
         }
 
         static function get_wallet_by_transaction_code($transaction_code){

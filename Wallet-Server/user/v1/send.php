@@ -1,7 +1,7 @@
 <?php
     include("../../models/wallet.php");
     include("../../utils.php");
-    $base = "http://localhost/Projects/";
+    $base = "13.38.107.39";
 
     if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
         $data = json_decode(file_get_contents('php://input'), true);
