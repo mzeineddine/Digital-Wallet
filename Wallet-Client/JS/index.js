@@ -1,5 +1,5 @@
-const base = "http://localhost/Projects";
-const api_base = "http://13.38.107.39";
+const base = "../../";
+const api_base = "https://cors-anywhere.herokuapp.com/http://13.38.107.39";
 function alert_message(message){
     alert(message);
     return false;
@@ -63,7 +63,7 @@ function register(){
             else
                 alert(message);
             if(sessionStorage.hasOwnProperty("user_id")){
-                window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/dashboard.html');
+                window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
     }
         })
     }
@@ -95,7 +95,7 @@ async function login(){
         else
             alert(message);
         if(sessionStorage.hasOwnProperty("user_id"))
-            window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/dashboard.html');
+            window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
         reset_fields_by_name(["email", "pass"]);
     }
 }
@@ -110,7 +110,7 @@ function check_login(){
         console.log("id found")
     }else{
         console.log("not found");
-        window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/login.html');
+        window.location.replace(base+'/Wallet-Client/HTML/login.html');
     }
 }
 function transaction(){
@@ -195,7 +195,7 @@ async function get_wallet_by_id(id){
         return true;
     }else{
         alert(message);
-        window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/dashboard.html');
+        window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
     }
 }
 
@@ -271,7 +271,7 @@ async function submit_send_trans(){
 }
 
 function view_trans_hist(){
-    window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/trans_hist.html');
+    window.location.replace(base+'/Wallet-Client/HTML/trans_hist.html');
 }
 
 async function get_trans_hist(){
@@ -296,7 +296,7 @@ async function get_trans_hist(){
 function logout(){
     sessionStorage.clear();
     if(!sessionStorage.getItem("user_id")){
-        window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/login.html');
+        window.location.replace(base+'/Wallet-Client/HTML/login.html');
     }
 }
 
@@ -321,10 +321,10 @@ async function register_wallet(){
     });
     console.log(response.data);
     const [result,message] = split_response(response.data);
-    window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/dashboard.html');
+    window.location.replace(base+'/Wallet-Client/HTML/dashboard.html');
 }
 function go_to_login(){
-    window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/login.html');
+    window.location.replace(base+'/Wallet-Client/HTML/login.html');
 }
 async function dashboard_load(){
     console.log(sessionStorage.getItem("user_id"));
