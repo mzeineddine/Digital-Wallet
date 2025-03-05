@@ -207,8 +207,9 @@ async function submit_withdraw(){
         id: id,
         amount: amount
     });
-    if(!response.data){
-        alert_message("Insufficient amount in balance");
+    const [result, message]=split_response(response.data);
+    if(!result){
+        alert(message);
     }        
     reset_fields_by_name(["amount"]);
     get_wallet_by_id(sessionStorage.getItem("user_id"));
