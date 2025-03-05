@@ -56,7 +56,7 @@ function register(){
             pass: pass
         })
         .then(response => {
-            console.log(response_data);
+            console.log(response.data);
             [result,message] = split_response(response.data);
             alert(message);
             if(result.hasOwnProperty("id"))
@@ -175,14 +175,28 @@ async function change_user_data(){
     }
 }
 
+async function get_wallet_by_id_without_message(id){
+    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/get_wallet.php", {
+        id: id
+    });
+    [result,message] = split_response(response.data);
+    if(result.hasOwnProperty("id")){
+        document.getElementById("balance").innerHTML="Your balance is "+result["balance"];
+        return true;
+    }else{
+        return false;
+    }
+}
+
 async function get_wallet_by_id(id){
     const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/get_wallet.php", {
         id: id
     });
     [result,message] = split_response(response.data);
-    if(result.hasOwnProperty("id"))
+    if(result.hasOwnProperty("id")){
         document.getElementById("balance").innerHTML="Your balance is "+result["balance"];
-    else{
+        return true;
+    }else{
         alert(message);
         window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/dashboard.html');
     }
@@ -300,5 +314,36 @@ async function delete_account(){
         }else{
             alert(message);
         }
+    }
+}
+
+async function register_wallet(){
+    const response = await axios.post(base+"/Digital-Wallet/Wallet-Server/user/v1/add_wallet.php", {
+        id: sessionStorage.getItem("user_id")
+    });
+    console.log(response.data);
+    [result,message] = split_response(response.data);
+    window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/dashboard.html');
+}
+function go_to_login(){
+    window.location.replace(base+'/Digital-Wallet/Wallet-Client/HTML/login.html');
+}
+async function dashboard_load(){
+    console.log(sessionStorage.getItem("user_id"));
+    if(sessionStorage.getItem("user_id")){
+        bool = await(get_wallet_by_id_without_message(sessionStorage.getItem("user_id")));
+        console.log(bool);
+        if(bool){
+            document.getElementById("btn_login").classList.add("none");
+            document.getElementById("btn").classList.add("none");
+            document.getElementById("balance").classList;
+        }else{
+            document.getElementById("btn").classList;
+            document.getElementById("balance").classList.add("none");
+            document.getElementById("btn_login").classList.add("none");
+        }
+    } else{
+        document.getElementById("btn").classList.add("none");
+        document.getElementById("balance").classList.add("none");
     }
 }
