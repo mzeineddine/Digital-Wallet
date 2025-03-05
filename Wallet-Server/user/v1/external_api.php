@@ -57,7 +57,7 @@
                 }
             } else{
                 echo json_encode(["result"=>false]);
-                echo json_encode(["message"=>"invalid code"]);
+                echo json_encode(["message"=>"can not found receiver"]);
                 return;
             }
         }
