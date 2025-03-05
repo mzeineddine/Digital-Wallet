@@ -29,23 +29,23 @@
                     // ]);
                     // $response = curl_exec($curl);
 
-                    // $url = $base."Digital-Wallet/Wallet-Server/user/v1/add_transaction.php";
-                    // $data = ["sender_id" => $data["id"], "receiver_id"=> "0", "amount"=>$data["amount"]];
-                    // $options = [
-                    //     'http' => [
-                    //         'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                    //         'method' => 'POST',
-                    //         'content' => http_build_query($data),
-                    //     ],
-                    // ];
-                    // $context = stream_context_create($options);
-                    // $result = file_get_contents($url, false, $context);
-                    // if ($result === false) {
-                    //     /* Handle error */
-                    //     echo json_encode(["result"=>false]);
-                    //     echo json_encode(["message"=>"something went wrong"]);
-                    //     return;
-                    // }
+                    $url = $base."Digital-Wallet/Wallet-Server/user/v1/add_transaction.php";
+                    $data = ["sender_id" => $data["id"], "receiver_id"=> "0", "amount"=>$data["amount"]];
+                    $options = [
+                        'http' => [
+                            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                            'method' => 'POST',
+                            'content' => http_build_query($data),
+                        ],
+                    ];
+                    $context = stream_context_create($options);
+                    $result = file_get_contents($url, false, $context);
+                    if ($result === false) {
+                        /* Handle error */
+                        echo json_encode(["result"=>false]);
+                        echo json_encode(["message"=>"something went wrong"]);
+                        return;
+                    }
 
                     // var_dump($result);
 
