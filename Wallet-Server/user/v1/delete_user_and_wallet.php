@@ -10,9 +10,9 @@
     }
 
     if(data_utils::missing_parm(1,$data, ["id"])){
-        $wallet = wallet::delete_wallet($data["id"]);
+        $wallet = wallet::delete_wallet($data["id"],$con);
         if($wallet){
-            $user = user::delete_user($data["id"]);
+            $user = user::delete_user($data["id"],$con);
             if($user){
                 echo json_encode(["result"=>true]);
                 echo json_encode(["message"=>"wallet and user deleted"]);

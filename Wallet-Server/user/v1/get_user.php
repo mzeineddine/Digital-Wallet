@@ -8,7 +8,7 @@
         $data = $_POST;
     }
     if(data_utils::missing_parm(1,$data, ["id"])){
-        $user = user::get_user_by_id($data["id"]);
+        $user = user::get_user_by_id($data["id"],$con);
         if($user){
             echo json_encode(["result"=>$user]);
             echo json_encode(["message"=>"user found"]);

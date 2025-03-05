@@ -10,8 +10,8 @@
     }
 
     if(data_utils::missing_parm(3,$data, ["id","transaction_code","amount"])){
-        $user_wallet = wallet::get_wallet_by_id($data['id']);
-        $receiver_wallet = wallet::get_wallet_by_transaction_code($data["transaction_code"]);
+        $user_wallet = wallet::get_wallet_by_id($data['id'],$con);
+        $receiver_wallet = wallet::get_wallet_by_transaction_code($data["transaction_code"],$con);
         $balance = (double)($user_wallet->balance);
         $balance -= (double)($data["amount"]);
         if($balance<0){
@@ -20,10 +20,10 @@
             return;
         } else{
             if($receiver_wallet){   
-                if(wallet::update_wallet_balance($user_wallet->id, $balance)){    
+                if(wallet::update_wallet_balance($user_wallet->id, $balance,$con)){    
                     $balance = (double)($receiver_wallet->balance);
                     $balance += (double)($data["amount"]);
-                    if(wallet::update_wallet_balance($receiver_wallet->id, $balance)){
+                    if(wallet::update_wallet_balance($receiver_wallet->id, $balance,$con)){
                         // calling add_transaction api "sender_id","receiver_id","amount"
                 $post_data=array("sender_id" => $user_wallet->user_id, "receiver_id"=> $receiver_wallet->user_id, "amount"=>$data["amount"]);
                 $curl = curl_init();

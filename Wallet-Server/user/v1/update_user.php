@@ -16,7 +16,7 @@ if(data_utils::missing_parm(4,$data, ["phone_nb", "full_name","address", "id"]))
     $id = $data['id'];
     $pass = hash("sha3-256", $pass);
     if(isset($data['pass']) && $data['pass'] != ""){
-        if(user::update_user_with_pass($full_name, $pass, $phone_nb,$address,$id)){
+        if(user::update_user_with_pass($full_name, $pass, $phone_nb,$address,$id,$con)){
             echo json_encode(["message"=>"User Updated"]);
             echo json_encode(["result"=>"true"]);
             return;
@@ -26,7 +26,7 @@ if(data_utils::missing_parm(4,$data, ["phone_nb", "full_name","address", "id"]))
             return;
         }
     } else{
-        if(user::update_user_without_pass($full_name, $phone_nb,$address,$id)){
+        if(user::update_user_without_pass($full_name, $phone_nb,$address,$id,$con)){
             echo json_encode(["message"=>"User Updated"]);
             echo json_encode(["result"=>"true"]);
             return;

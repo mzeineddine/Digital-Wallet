@@ -9,7 +9,7 @@
     }
     if(data_utils::missing_parm(1,$data, ["id"])){
         $id=$data['id'];
-        $wallet = wallet::get_wallet_by_id($id);
+        $wallet = wallet::get_wallet_by_id($id,$con);
         if($wallet){
             echo json_encode(["result"=>$wallet]);
             echo json_encode(["message"=>"Wallet found"]);

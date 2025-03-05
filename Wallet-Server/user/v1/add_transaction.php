@@ -9,7 +9,7 @@
     }
     if(data_utils::missing_parm(3,$data, ["sender_id","receiver_id","amount"])){
         $time = date("Y-m-d H:i:s");
-        $transaction = transaction::create_transaction($data["sender_id"],$data["receiver_id"],$time,$data["amount"]);
+        $transaction = transaction::create_transaction($data["sender_id"],$data["receiver_id"],$time,$data["amount"],$con);
         if($transaction){
             echo json_encode(["result"=>$transaction]);
             echo json_encode(["message"=>"Transaction Created"]);

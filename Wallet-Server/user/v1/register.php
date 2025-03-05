@@ -17,13 +17,13 @@
         $pass = hash("sha3-256", $pass);
         $query = $con->prepare("SELECT * FROM users WHERE email=?");
         
-        if(user::check_email_usage($email)){
+        if(user::check_email_usage($email,$con)){
             echo json_encode(["result"=>""]);
             echo json_encode(["message"=>"Email Already Used"]);
             return;
         } else{
             $time = date("Y-m-d H:i:s");
-            $user = user::create_user($email,$pass,$full_name,$time);
+            $user = user::create_user($email,$pass,$full_name,$time,$con);
             if($user->id!=-1){
                     $message = "Verify your email";
                     $to=$email;
