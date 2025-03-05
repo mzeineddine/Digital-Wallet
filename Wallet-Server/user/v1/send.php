@@ -26,15 +26,33 @@
                     $balance += (double)($data["amount"]);
                     if(wallet::update_wallet_balance($receiver_wallet->id, $balance,$con)){
                         // calling add_transaction api "sender_id","receiver_id","amount"
-                $post_data=array("sender_id" => $user_wallet->user_id, "receiver_id"=> $receiver_wallet->user_id, "amount"=>$data["amount"]);
-                $curl = curl_init($base."Digital-Wallet/Wallet-Server/user/v1/add_transaction.php");
-                curl_setopt($curl, CURLOPT_POST, 1);
-                curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($post_data));
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($curl, CURLOPT_HTTPHEADER, [
-                    'Content-Type: application/x-www-form-urlencoded'
-                ]);
-                $response = curl_exec($curl);
+                // $post_data=array("sender_id" => $user_wallet->user_id, "receiver_id"=> $receiver_wallet->user_id, "amount"=>$data["amount"]);
+                // $curl = curl_init($base."Digital-Wallet/Wallet-Server/user/v1/add_transaction.php");
+                // curl_setopt($curl, CURLOPT_POST, 1);
+                // curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($post_data));
+                // curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                // curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                //     'Content-Type: application/x-www-form-urlencoded'
+                // ]);
+                // $response = curl_exec($curl);
+                $url = $base."Digital-Wallet/Wallet-Server/user/v1/add_transaction.php";
+                $data = ["sender_id" => $user_wallet->user_id, "receiver_id"=> $receiver_wallet->user_id, "amount"=>$data["amount"]];
+                $options = [
+                    'http' => [
+                        'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                        'method' => 'POST',
+                        'content' => http_build_query($data),
+                    ],
+                ];
+                $context = stream_context_create($options);
+                $result = file_get_contents($url, false, $context);
+                if ($result === false) {
+                    /* Handle error */
+                    echo json_encode(["result"=>false]);
+                    echo json_encode(["message"=>"something went wrong"]);
+                    return;
+                }
+                
                 // end calling api
                         echo json_encode(["result"=>true]);
                         echo json_encode(["message"=>"send successfully"]);
