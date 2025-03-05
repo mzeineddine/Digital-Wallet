@@ -12,7 +12,7 @@
         }
 
         static function create_wallet($id, $code,$con){
-            $query = $con->prepare("INSERT INTO wallets (user_id, transaction_code) VALUES (?,?)");
+            $query = $con->prepare("INSERT INTO wallets (user_id, transaction_code) VALUES (?,?);");
             if(sql_utils::query_execution($query,"i", [$id, $code])){
                 $wallet_id = $con->insert_id;
                 $wallet = new wallet($wallet_id,$id, 0);
@@ -21,7 +21,7 @@
         }
 
         static function get_wallet_by_id($id,$con){
-            $query = $con->prepare("SELECT * FROM wallets WHERE user_id=?");
+            $query = $con->prepare("SELECT * FROM wallets WHERE user_id=?;");
             if(sql_utils::query_execution($query,"i", [$id])){
                 $result = $query->get_result();
                 $wallet=null;
@@ -34,7 +34,7 @@
         }
 
         static function get_wallet_by_transaction_code($transaction_code, $con){
-            $query = $con->prepare("SELECT * FROM wallets WHERE transaction_code=?");
+            $query = $con->prepare("SELECT * FROM wallets WHERE transaction_code=?;");
             if(sql_utils::query_execution($query,"s", [$transaction_code])){
                 $result = $query->get_result();
                 $wallet=new wallet(-1 ,-1,-1 );

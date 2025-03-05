@@ -3,7 +3,7 @@
     include("../../connection/connection.php");
     include("../../utils.php");
 
-    $base = "13.38.107.39";
+    $base = "http://13.38.107.39";
 
     if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
         $data = json_decode(file_get_contents('php://input'), true);

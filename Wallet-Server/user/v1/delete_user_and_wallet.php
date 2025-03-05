@@ -23,6 +23,12 @@
                 return;
             }
         }else{
+            $user = user::delete_user($data["id"],$con);
+            if($user){
+                echo json_encode(["result"=>true]);
+                echo json_encode(["message"=>"user deleted but wallet not deleted"]);
+                return;
+            }
             echo json_encode(["result"=>false]);
             echo json_encode(["message"=>"user and wallet not deleted"]);
             return;
