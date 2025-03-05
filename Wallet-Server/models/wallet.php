@@ -16,8 +16,8 @@
             $query = $con->prepare("INSERT INTO wallets (user_id) VALUES (?)");
             if(sql_utils::query_execution($query,"i", [$id])){
                 $wallet_id = $con->insert_id;
-                $user = new wallet($wallet_id,$id, 0);
-                return $user;
+                $wallet = new wallet($wallet_id,$id, 0);
+                return $wallet;
             }
         }
 
